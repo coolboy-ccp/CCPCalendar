@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "NSDate+CCPCalendar.h"
 
 @interface ViewController ()
 
@@ -16,7 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    NSDate *date = [NSDate date];
+    NSInteger a =  [date firstDay_week];
+    NSInteger b = [date dayOfMonth];
 }
 
 

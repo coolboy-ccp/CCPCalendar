@@ -10,8 +10,7 @@
 #import "CCPCalendarButton.h"
 #import "CCPCalendarHeader.h"
 #import "CCPCalendarManager.h"
-#import "NSDate+CCPDate.h"
-
+#import "NSDate+CCPCalendar.h"
 @interface CCPCalendarView()
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
@@ -34,8 +33,16 @@
  * 生成一个月的日历
  */
 - (void)createDateView:(NSDate *)date {
-    NSDate *firstDay = [date month_firstDay];
-    NSString *dateStr = [self.dateFormatter stringFromDate:firstDay];
+    NSInteger week = [date firstDay_week];
+    NSInteger days = [date dayOfMonth];
+    CGFloat w = main_width / 7;
+    NSInteger count = week + days;
+    for (int i = 0; i < count; i++) {
+        NSInteger row = count / 7;
+        NSInteger column = i - row * 7;
+        NSInteger titleNum = i - week;
+        
+    }
     
 }
 
