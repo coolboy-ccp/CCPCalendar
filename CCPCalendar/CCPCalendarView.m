@@ -7,15 +7,36 @@
 //
 
 #import "CCPCalendarView.h"
+#import "CCPCalendarButton.h"
+#import "CCPCalendarHeader.h"
+#import "CCPCalendarManager.h"
+#import "NSDate+CCPDate.h"
+
+@interface CCPCalendarView()
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
+
+@end
 
 @implementation CCPCalendarView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (NSDateFormatter *)dateFormatter {
+    if (!_dateFormatter) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        _dateFormatter.timeZone = [NSTimeZone localTimeZone];
+        _dateFormatter.locale = [NSLocale currentLocale];
+    }
+    return _dateFormatter;
 }
-*/
+
+/*
+ * 生成一个月的日历
+ */
+- (void)createDateView:(NSDate *)date {
+    NSDate *firstDay = [date month_firstDay];
+    NSString *dateStr = [self.dateFormatter stringFromDate:firstDay];
+    
+}
 
 @end
