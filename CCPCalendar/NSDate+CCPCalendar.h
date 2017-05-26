@@ -31,4 +31,6 @@
 - (NSDate *)changToDay:(NSInteger)day;
 //是否晚于当前日期 精确到日
 - (BOOL)laterThan:(NSDate *)date;
+//星期转文字
+- (NSString *)weekString;
 @end

@@ -114,12 +114,18 @@
 
 //是否晚于当前日期 精确到日
 - (BOOL)laterThan:(NSDate *)date {
-    NSString *str1 = [NSString stringWithFormat:@"%ld%02ld%02ld",[self getYear],[self getMonth],[self getDay]];
-    NSString *str2 = [NSString stringWithFormat:@"%ld%02ld%02ld",[self getYear:date],[self getMonth:date],[self getDay:date]];
+    NSString *str1 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[self getYear],(long)[self getMonth],(long)[self getDay]];
+    NSString *str2 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[self getYear:date],(long)[self getMonth:date],(long)[self getDay:date]];
     if ([str1 compare:str2] == NSOrderedAscending) {
         return YES;
     }
     return NO;
+}
+
+- (NSString *)weekString {
+    NSDateComponents *compts = [self compts:self];
+    NSArray *weeks = @[@"星期日",@"星期一",@"星期二",@"星期三",@"星期四",@"星期五",@"星期六"];
+    return weeks[compts.weekday - 1];
 }
 
 @end

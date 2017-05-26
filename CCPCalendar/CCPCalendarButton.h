@@ -15,5 +15,6 @@
 @property (nonatomic, strong) CCPCalendarManager *manager;
 //生成当前btn的date
 @property (nonatomic, strong) NSDate *date;
+
 - (void)ccpDispaly;
 @end

@@ -22,7 +22,7 @@
 
 - (IBAction)test:(id)sender {
     CCPCalendarManager *manager = [[CCPCalendarManager alloc]init];
-    [manager show_signal];
+    [manager show_mutil];
 }
 
 - (void)didReceiveMemoryWarning {

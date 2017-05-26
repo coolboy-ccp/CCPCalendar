@@ -10,6 +10,13 @@
 #import "CCPCalendarView.h"
 #import "AppDelegate.h"
 
+@interface CCPCalendarManager()
+{
+    CCPCalendarView *av;
+}
+
+@end
+
 @implementation CCPCalendarManager
 
 - (instancetype)init {
@@ -24,34 +31,58 @@
     return delegate.window;
 }
 
+- (void)av {
+    if (!av) {
+        av = [[CCPCalendarView alloc] init];
+        av.frame = CGRectMake(0, main_height, main_width, main_height);
+        av.manager = self;
+        [av initSubviews];
+        av.alpha = 0.0;
+        [[self appWindow] addSubview:av];
+    }
+    [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        av.alpha = 1.0;
+        av.frame = CGRectMake(0, 0, main_width, main_height);
+    } completion:nil];
+}
+
+- (closeBlock)close {
+    __weak typeof(av)weekAV = av;
+    if (!_close) {
+        _close = ^() {
+            [UIView animateWithDuration:.35 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                weekAV.frame = CGRectMake(0, main_height, main_width, main_height);
+                weekAV.alpha = 0.0;
+            } completion:nil];
+        };
+    }
+    return _close;
+}
 
 //单选有过去
 - (void)show_signal_past {
     self.isShowPast = YES;
-    CCPCalendarView *av = [[CCPCalendarView alloc] init];
-    av.frame = CGRectMake(0, main_height, main_width, main_height);
-    [[self appWindow] addSubview:av];
-    [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        av.frame = main_bounds;
-    } completion:nil];
+    [self av];
 }
 
-//多选邮过去
-//- (void)show_mutil_past;
-////单选没有过去
+//多选有过去
+- (void)show_mutil_past {
+    self.isShowPast = YES;
+    self.selectType = select_type_multiple;
+    [self av];
+}
+//单选没有过去
 - (void)show_signal {
     self.isShowPast = NO;
-    CCPCalendarView *av = [[CCPCalendarView alloc] init];
-    av.frame = CGRectMake(0, main_height, main_width, main_height);
-    av.manager = self;
-    [av initSubviews];
-    [[self appWindow] addSubview:av];
-    [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        av.frame = main_bounds;
-    } completion:nil];
+    [self av];
+    
 }
-////多选没有过去
-//- (void)show_mutil;
+//多选没有过去
+- (void)show_mutil {
+    self.isShowPast = NO;
+    self.selectType = select_type_multiple;
+    [self av];
+}
 
 
 - (NSDate *)createDate {

@@ -21,7 +21,7 @@
 /*
  * 日历选择类型
  * 0: 单选
- * 1: 多选 范围选择
+ * 1: 双选 范围选择
  */
 typedef NS_ENUM(NSInteger, CCPCalendar_select_type) {
     select_type_single = 0,
@@ -66,13 +66,21 @@ typedef void(^completeBlock)(void);
 @property (nonatomic, assign) CCPCalendar_select_type selectType;
 
 //
-@property (copy) closeBlock close;
+@property (copy, nonatomic) closeBlock close;
 //
 @property (copy) cleanBlock clean;
 //
 @property (copy) clickBlock click;
 //
 @property (copy) completeBlock complete;
+/*仅在multi时保存 选择开始时间*/
+@property (nonatomic, strong) NSDate *startDate;
+/*仅在multi时保存 选择结束时间*/
+@property (nonatomic, strong) NSDate *endDate;
+/*此属性用于一段日历的生成 
+ 此属性为一段日历的结束日期
+ */
+@property (nonatomic, strong) NSDate *createEndDate;
 
 //
 //单选有过去
