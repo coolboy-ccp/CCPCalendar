@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "CCPCalendarManager.h"
+#import "NSDate+CCPCalendar.h"
 
 @interface CCPCalendarButton : UIButton
-{
-    CGFloat fontSize;
-}
+
 @property (nonatomic, strong) CCPCalendarManager *manager;
+//生成当前btn的date
+@property (nonatomic, strong) NSDate *date;
+- (void)ccpDispaly;
 @end

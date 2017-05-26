@@ -20,16 +20,31 @@
 }
 
 - (NSDateComponents *)compts:(NSDate *)date {
-    NSDateComponents *dateFormatter = [[self calendar] components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday fromDate:date];
-    return dateFormatter;
+    NSDateComponents *compts = [[self calendar] components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday fromDate:date];
+    return compts;
 }
 
 - (NSDate *)firstDay {
     NSCalendar *clendar = [self calendar];
     NSDateComponents *compts = [self compts:self];
-    compts.day = 6;
+    compts.day = 2;
     NSDate *date = [clendar dateFromComponents:compts];
     return date;
+}
+
+- (NSInteger)getMonth:(NSDate *)date {
+    NSDateComponents *copmts = [self compts:date];
+    return copmts.month;
+}
+
+- (NSInteger)getDay:(NSDate *)date {
+    NSDateComponents *copmts = [self compts:date];
+    return copmts.day;
+}
+
+- (NSInteger)getYear:(NSDate *)date {
+    NSDateComponents *copmts = [self compts:date];
+    return copmts.year;
 }
 
 /*-------public-----*/
@@ -37,7 +52,8 @@
 - (NSInteger)firstDay_week {
     NSDate *firstDate = [self firstDay];
     NSDateComponents *compts = [self compts:firstDate];
-    return compts.weekday - 1;
+    NSArray *arr = @[@1,@6,@0,@1,@2,@3,@4,@5];
+    return [arr[compts.weekday] integerValue];
 }
 
 - (NSDate *)addMonth:(NSInteger)month {
@@ -65,6 +81,45 @@
     NSCalendar *clendar = [self calendar];
     NSRange days = [clendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:self];
     return days.length;
+}
+
+- (NSInteger)getYear {
+    NSDateComponents *copmts = [self compts:self];
+    return copmts.year;
+}
+
+- (NSInteger)getMonth {
+    NSDateComponents *copmts = [self compts:self];
+    return copmts.month;
+}
+
+//当前日期日
+- (NSInteger)getDay {
+    NSDateComponents *copmts = [self compts:self];
+    return copmts.day;
+}
+//是否相等 精确到日
+- (BOOL)isSameTo:(NSDate *)date {
+    if ([self getDay] == [self getDay:date] && [self getYear] == [self getYear:date] && [self getMonth] == [self getMonth:date]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (NSDate *)changToDay:(NSInteger)day {
+    NSDateComponents *copmts = [self compts:self];
+    copmts.day = day;
+    return [[self calendar] dateFromComponents:copmts];
+}
+
+//是否晚于当前日期 精确到日
+- (BOOL)laterThan:(NSDate *)date {
+    NSString *str1 = [NSString stringWithFormat:@"%ld%02ld%02ld",[self getYear],[self getMonth],[self getDay]];
+    NSString *str2 = [NSString stringWithFormat:@"%ld%02ld%02ld",[self getYear:date],[self getMonth:date],[self getDay:date]];
+    if ([str1 compare:str2] == NSOrderedAscending) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

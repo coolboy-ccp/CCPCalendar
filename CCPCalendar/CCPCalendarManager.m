@@ -7,15 +7,51 @@
 //
 
 #import "CCPCalendarManager.h"
+#import "CCPCalendarView.h"
+#import "AppDelegate.h"
 
 @implementation CCPCalendarManager
 
 - (instancetype)init {
     if (self = [super init]) {
-        
+        self.isShowPast = YES;
     }
     return self;
 }
+
+- (UIWindow *)appWindow {
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    return delegate.window;
+}
+
+
+//单选有过去
+- (void)show_signal_past {
+    self.isShowPast = YES;
+    CCPCalendarView *av = [[CCPCalendarView alloc] init];
+    av.frame = CGRectMake(0, main_height, main_width, main_height);
+    [[self appWindow] addSubview:av];
+    [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        av.frame = main_bounds;
+    } completion:nil];
+}
+
+//多选邮过去
+//- (void)show_mutil_past;
+////单选没有过去
+- (void)show_signal {
+    self.isShowPast = NO;
+    CCPCalendarView *av = [[CCPCalendarView alloc] init];
+    av.frame = CGRectMake(0, main_height, main_width, main_height);
+    av.manager = self;
+    [av initSubviews];
+    [[self appWindow] addSubview:av];
+    [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        av.frame = main_bounds;
+    } completion:nil];
+}
+////多选没有过去
+//- (void)show_mutil;
 
 
 - (NSDate *)createDate {
@@ -27,7 +63,7 @@
 
 - (UIColor *)disable_text_color {
     if (!_disable_text_color) {
-        _disable_text_color = rgba(255.0, 255.0, 255.0, 0.5);
+        _disable_text_color = rgba(255.0, 255.0, 255.0, 0.7);
     }
     return _disable_text_color;
 }

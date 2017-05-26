@@ -14,4 +14,5 @@
 @property (nonatomic, strong) CCPCalendarManager *manager;
 
 - (void)displayLabel;
+- (void)initSubviews;
 @end

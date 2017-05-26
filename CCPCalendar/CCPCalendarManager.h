@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "UILabel+CCPLabel.h"
 
 #define main_width  [UIScreen mainScreen].bounds.size.width
 #define main_height [UIScreen mainScreen].bounds.size.height
+#define main_bounds [UIScreen mainScreen].bounds
 
 #define rgba(r,g,b,a) [UIColor colorWithRed:r / 255.0 green:g / 255.0 blue:b / 255.0 alpha:a]
 //相对iphone6布局
@@ -19,13 +21,11 @@
 /*
  * 日历选择类型
  * 0: 单选
- * 1: 多选
- * 2: 范围选择
+ * 1: 多选 范围选择
  */
 typedef NS_ENUM(NSInteger, CCPCalendar_select_type) {
     select_type_single = 0,
     select_type_multiple,
-    select_type_range
 };
 
 //关闭
@@ -33,7 +33,7 @@ typedef void(^closeBlock)(void);
 //清除
 typedef void(^cleanBlock)(void);
 //点击日期
-typedef void(^clickBlock)(NSString *dateStr);
+typedef void(^clickBlock)(NSString *dateStr, UIButton *btn);
 //选择完成
 typedef void(^completeBlock)(void);
 
@@ -60,6 +60,10 @@ typedef void(^completeBlock)(void);
 @property (nonatomic, strong) NSString *startTitle;
 //结束标题
 @property (nonatomic, strong) NSString *endTitle;
+//是否需要显示生成日期之前的日历
+@property (nonatomic, assign) BOOL isShowPast;
+//
+@property (nonatomic, assign) CCPCalendar_select_type selectType;
 
 //
 @property (copy) closeBlock close;
@@ -69,6 +73,17 @@ typedef void(^completeBlock)(void);
 @property (copy) clickBlock click;
 //
 @property (copy) completeBlock complete;
+
+//
+//单选有过去
+- (void)show_signal_past;
+//多选邮过去
+- (void)show_mutil_past;
+//单选没有过去
+- (void)show_signal;
+//多选没有过去
+- (void)show_mutil;
+//
 /*------------private----*/
 //日历格式
 @property (nonatomic, strong, readonly) NSDateFormatter *dateFormat;

@@ -7,6 +7,8 @@
 //
 
 #import "CCPCalendarHeader.h"
+#import "UIView+CCPView.h"
+
 
 @interface CCPCalendarHeader()
 {
@@ -24,17 +26,25 @@
 
 @implementation CCPCalendarHeader
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+- (instancetype)init {
+    if (self = [super init]) {
         l_gap = r_gap = scale_w * 20.0;
         big_l_gap = big_r_gap = scale_w * 25.0;
-        t_gap = scale_h * 15 + 20;
-        [self functionBtns];
-        [self showSelect];
-        [self weeks];
-        [self line];
+        t_gap = scale_h * 15;
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
+}
+
+- (void)initSubviews {
+    [self functionBtns];
+    [self showSelect];
+    [self weeks];
+    [self line];
+    CGFloat h = [self getSupH];
+    UIView *bLine = [[UIView alloc] initWithFrame:CGRectMake(0, h, main_width, 1)];
+    bLine.backgroundColor = rgba(255, 255, 255, 0.6);
+    [self addSubview:bLine];
 }
 
 /*
@@ -43,6 +53,7 @@
 - (void)functionBtns {
     l_btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [l_btn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [l_btn setTitle:@"cancle" forState:UIControlStateNormal];
     l_btn.frame = CGRectMake(l_gap, t_gap, scale_w * 25, scale_w * 25);
     [l_btn addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:l_btn];
@@ -58,38 +69,44 @@
 //中间显示大字
 - (void)showSelect {
     l_label = [[UILabel alloc] init];
-    l_label.font = [UIFont systemFontOfSize:scale_w * 30];
+    l_label.font = [UIFont systemFontOfSize:scale_w * 20];
     l_label.textColor = [UIColor whiteColor];
     l_label.textAlignment = NSTextAlignmentLeft;
+    l_label.numberOfLines = 2;
     [self addSubview:l_label];
     r_label = [[UILabel alloc] init];
     r_label.font = l_label.font;
     r_label.textColor = [UIColor whiteColor];
     r_label.textAlignment = NSTextAlignmentRight;
+    r_label.numberOfLines = 2;
     [self addSubview:r_label];
+    [self displayLabel];
 }
 
 //星期
 - (void)weeks {
     NSArray *arr = @[@"日",@"一",@"二",@"三",@"四",@"五",@"六"];
     CGFloat w = main_width / 7;
+    CGFloat y;
     for (NSString *week in arr) {
         NSInteger idx = [arr indexOfObject:week];
-        UILabel *weekLabel = [[UILabel alloc] initWithFrame:CGRectMake(w * idx , CGRectGetMaxY(r_label.frame), w, 25 * scale_h)];
+        UILabel *weekLabel = [[UILabel alloc] initWithFrame:CGRectMake(w * idx , CGRectGetMaxY(r_label.frame) + 15 * scale_h, w, 25 * scale_h)];
+        y = CGRectGetMaxY(weekLabel.frame);
         weekLabel.textAlignment = NSTextAlignmentCenter;
         weekLabel.font = [UIFont systemFontOfSize:14 * scale_h];
         weekLabel.textColor = [UIColor whiteColor];
         weekLabel.text = week;
         [self addSubview:weekLabel];
     }
+//    UIView *line = [UIView alloc] initWithFrame:CGRectMake(0, y, main_width, <#CGFloat height#>);
 }
 
 //中间斜线
 - (void)line {
-    CGFloat distance = 30 * scale_w;
-    CGFloat centerX = self.center.x;
-    CGPoint startP = CGPointMake(centerX - distance, CGRectGetMaxY(l_label.frame));
-    CGPoint endP = CGPointMake(centerX + distance, CGRectGetMaxY(r_label.frame));
+    CGFloat distance = 25 * scale_w;
+    CGFloat centerX = main_width / 2;
+    CGPoint startP = CGPointMake(centerX - distance, CGRectGetMaxY(l_label.frame) - 5);
+    CGPoint endP = CGPointMake(centerX + distance, CGRectGetMinY(r_label.frame) + 5);
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:startP];
     [path addLineToPoint:endP];
@@ -99,14 +116,6 @@
     [self.layer addSublayer:shapeL];
 }
 
-- (CGFloat)text_w:(UILabel *)la {
-    UIFont *font = la.font;
-    NSDictionary *attri = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor whiteColor]};
-    CGRect rect = [la.text boundingRectWithSize:CGSizeMake(1000, 70 * scale_h) options:NSStringDrawingUsesFontLeading attributes:attri context:nil];
-    return rect.size.width;
-    
-}
-
 - (CGFloat)r_btn_w {
     NSString *tt = r_btn.titleLabel.text;
     CGRect rect = [tt boundingRectWithSize:CGSizeMake(1000, 25 * scale_w) options:NSStringDrawingUsesFontLeading attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont systemFontOfSize:14 * scale_w weight:1.0 * scale_w]} context:nil];
@@ -114,16 +123,16 @@
 }
 
 - (void)displayLabel {
-    CGFloat top = 30 * scale_h;
-    CGFloat h = 70 * scale_h;
+    CGFloat top = 15 * scale_h;
+    CGFloat h = 48 * scale_h;
     if (![self.manager.startTitle isEqualToString:l_label.text]) {
         l_label.text = self.manager.startTitle;
-        CGFloat w = [self text_w:l_label];
+        CGFloat w = [l_label widthBy:h];
         l_label.frame = CGRectMake(big_l_gap, CGRectGetMaxY(l_btn.frame) + top, w, h);
     }
     if (![self.manager.endTitle isEqualToString:r_label.text]) {
         r_label.text = self.manager.endTitle;
-        CGFloat w = [self text_w:r_label];
+        CGFloat w = [r_label widthBy:h];
         r_label.frame = CGRectMake(main_width - big_r_gap - w, CGRectGetMaxY(l_btn.frame) + top, w, h);
     }
 }

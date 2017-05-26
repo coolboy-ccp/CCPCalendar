@@ -7,9 +7,10 @@
 //
 
 #import "ViewController.h"
-#import "NSDate+CCPCalendar.h"
+#import "CCPCalendarManager.h"
 
 @interface ViewController ()
+
 
 @end
 
@@ -17,11 +18,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSDate *date = [NSDate date];
-    NSInteger a =  [date firstDay_week];
-    NSInteger b = [date dayOfMonth];
 }
 
+- (IBAction)test:(id)sender {
+    CCPCalendarManager *manager = [[CCPCalendarManager alloc]init];
+    [manager show_signal];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

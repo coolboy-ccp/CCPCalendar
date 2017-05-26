@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "CCPCalendarManager.h"
 @interface CCPCalendarView : UIView
+@property (nonatomic, strong) CCPCalendarManager *manager;
 
-
-
+- (void)initSubviews;
 @end
