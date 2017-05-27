@@ -17,4 +17,5 @@
 @property (nonatomic, strong) NSDate *date;
 
 - (void)ccpDispaly;
+- (void)addObesers;
 @end

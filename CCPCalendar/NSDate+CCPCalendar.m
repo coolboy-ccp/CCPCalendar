@@ -32,6 +32,15 @@
     return date;
 }
 
+- (NSDate *)lastDay {
+    NSCalendar *calendar = [self calendar];
+    NSDateComponents *compts = [self compts:self];
+    compts.day = 0;
+    compts.month += 1;
+    NSDate *date = [calendar dateFromComponents:compts];
+    return date;
+}
+
 - (NSInteger)getMonth:(NSDate *)date {
     NSDateComponents *copmts = [self compts:date];
     return copmts.month;
@@ -54,6 +63,13 @@
     NSDateComponents *compts = [self compts:firstDate];
     NSArray *arr = @[@1,@6,@0,@1,@2,@3,@4,@5];
     return [arr[compts.weekday] integerValue];
+}
+
+- (NSInteger)lastDay_week {
+    NSDate *lastDate = [self lastDay];
+    NSDateComponents *compts = [self compts:lastDate];
+    NSInteger week = compts.weekday;
+    return week - 1;
 }
 
 - (NSDate *)addMonth:(NSInteger)month {
@@ -126,6 +142,11 @@
     NSDateComponents *compts = [self compts:self];
     NSArray *weeks = @[@"星期日",@"星期一",@"星期二",@"星期三",@"星期四",@"星期五",@"星期六"];
     return weeks[compts.weekday - 1];
+}
+
+- (NSInteger)getWeek {
+    NSDateComponents *compts = [self compts:self];
+    return compts.weekday - 1;
 }
 
 @end

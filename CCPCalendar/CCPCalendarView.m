@@ -11,9 +11,12 @@
 #import "CCPCalendarHeader.h"
 #import "NSDate+CCPCalendar.h"
 #import "UIView+CCPView.h"
+#import "CCPCalendarModel.h"
 @interface CCPCalendarView()
 {
     CGFloat bottomH;
+    //底部按钮
+    UIButton *saveBtn;
 }
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) CCPCalendarHeader *headerView;
@@ -31,6 +34,7 @@
 }
 
 - (void)initSubviews {
+    NSCAssert(self.manager, @"manager不可为空");
     [self headerView];
     [self createBottomView];
     [self createAScrDate];
@@ -44,13 +48,6 @@
         _dateFormatter.locale = [NSLocale currentLocale];
     }
     return _dateFormatter;
-}
-
-- (CCPCalendarManager *)manager {
-    if (!_manager) {
-        _manager = [[CCPCalendarManager alloc] init];
-    }
-    return _manager;
 }
 
 - (CCPCalendarHeader *)headerView {
@@ -88,9 +85,10 @@
     bigLabel.textColor = [UIColor whiteColor];
     [dateSupV addSubview:bigLabel];
     NSInteger week = [date firstDay_week];
+    NSInteger week_last = [date lastDay_week];
     NSInteger days = [date dayOfMonth];
     CGFloat w = main_width / 7;
-    NSInteger count = week + days;
+    NSInteger count = week + days + 6 - week_last;
     NSInteger h = count / 7;
     if (count % 7 > 0) {
         h += 1;
@@ -98,62 +96,109 @@
     for (int i = 0; i < count; i++) {
         NSInteger row = i / 7;
         NSInteger column = i - row * 7;
-        if (i >= week) {
-           NSString * titleNum = [NSString stringWithFormat:@"%d",i - week + 1];
-            CCPCalendarButton *btn = [[CCPCalendarButton alloc] initWithFrame:CGRectMake(column * w, row * w + CGRectGetMaxY(bigLabel.frame) + 10 * scale_h, w, w)];
-            btn.date = [date changToDay:i - week + 1];
-            btn.manager = self.manager;
-            __weak typeof(self)ws = self;
-            self.manager.click = ^(NSString *str, UIButton *abtn) {
-                if (ws.manager.selectType == 0) {
-                    if (ws.selectArr.count > 0) {
-                        UIButton *lastBtn = ws.selectArr.firstObject;
-                        if (abtn == lastBtn) {
-                            return;
-                        }
-                        lastBtn.selected = NO;
-                        [ws.selectArr removeAllObjects];
-                    }
-                }
-                else if (ws.manager.selectType == 1) {
-                    if (ws.selectArr.count > 1) {
-                        for (UIButton *lastBtn in ws.selectArr) {
-                            lastBtn.selected = NO;
-                        }
-                        [ws.selectArr removeAllObjects];
-                        ws.manager.endDate = ws.manager.startDate = nil;
-                    }
-                    else if (ws.selectArr.count > 0) {
-                        UIButton *lastBtn = ws.selectArr.firstObject;
-                        CCPCalendarButton *ccpBtn1 = (CCPCalendarButton *)lastBtn;
-                        CCPCalendarButton *ccpBtn2 = (CCPCalendarButton *)abtn;
-                        if (ccpBtn1 == ccpBtn2) {
-                            return;
-                        }
-                        if (![ccpBtn1.date laterThan:ccpBtn2.date]) {
-                            ccpBtn1.selected = NO;
-                            [ws.selectArr removeObject:ccpBtn1];
-                        }
-                        else {
-                            ws.manager.startDate = ccpBtn1.date;
-                            ws.manager.endDate = ccpBtn2.date;
-                        }
-                    }
-                }
-                CCPCalendarButton *ccpBtn = (CCPCalendarButton *)abtn;
-                ws.manager.startTitle = [NSString stringWithFormat:@"%ld月%02ld日\n%@",(long)[ccpBtn.date getMonth],(long)[ccpBtn.date getDay],[ccpBtn.date weekString]];
-                [ws.headerView displayLabel];
-                [ws.selectArr addObject:abtn];
-            };
-            
+        CCPCalendarButton *btn = [[CCPCalendarButton alloc] initWithFrame:CGRectMake(column * w, row * w + CGRectGetMaxY(bigLabel.frame) + 10 * scale_h, w, w)];
+        NSString *ym = [NSString stringWithFormat:@"%ld%02ld%02d",[date getYear],[date getMonth],i];
+        btn.tag = [ym integerValue];
+        btn.date = [date changToDay:i - week + 1];
+        btn.manager = self.manager;
+        if (i >= week && i < (count + week_last - 6)) {
+           NSString * titleNum = [NSString stringWithFormat:@"%ld",i - week + 1];
+            [self manageClick];
             [btn ccpDispaly];
             [btn setTitle:titleNum forState:UIControlStateNormal];
-            [dateSupV addSubview:btn];
         }
-        
+        [btn addObesers];
+        [dateSupV addSubview:btn];
     }
     dateSupV.backgroundColor = [UIColor clearColor];
+    [self managerClean];
     return dateSupV;
+}
+
+//清除
+- (void)managerClean {
+    __weak typeof(self)ws = self;
+    self.manager.clean = ^() {
+        ws.manager.startTitle = ws.manager.endTitle = nil;
+        ws.manager.startTag = ws.manager.endTag = 0;
+        for (CCPCalendarButton *btn in ws.selectArr) {
+            btn.manager = ws.manager;
+            btn.selected = NO;
+        }
+        [ws.selectArr removeAllObjects];
+    };
+}
+
+//按钮点击
+- (void)manageClick {
+    __weak typeof(self)ws = self;
+    __weak typeof(saveBtn)wsBtn = saveBtn;
+    self.manager.click = ^(NSString *str, UIButton *abtn) {
+        if (ws.manager.selectType == 0) {
+            if (ws.selectArr.count > 0) {
+                UIButton *lastBtn = ws.selectArr.firstObject;
+                if (abtn == lastBtn) {
+                    return;
+                }
+                lastBtn.selected = NO;
+                [ws.selectArr removeAllObjects];
+            }
+            wsBtn.enabled = YES;
+        }
+        else if (ws.manager.selectType == 1) {
+            if (ws.selectArr.count > 1) {
+                for (UIButton *lastBtn in ws.selectArr) {
+                    lastBtn.selected = NO;
+                }
+                [ws.selectArr removeAllObjects];
+                ws.manager.endTag = ws.manager.startTag = 0;
+            }
+            else if (ws.selectArr.count > 0) {
+                UIButton *lastBtn = ws.selectArr.firstObject;
+                CCPCalendarButton *ccpBtn1 = (CCPCalendarButton *)lastBtn;
+                CCPCalendarButton *ccpBtn2 = (CCPCalendarButton *)abtn;
+                if (ccpBtn1 == ccpBtn2) {
+                    return;
+                }
+                if (![ccpBtn1.date laterThan:ccpBtn2.date]) {
+                    ccpBtn1.selected = NO;
+                    [ws.selectArr removeObject:ccpBtn1];
+                }
+                else {
+                    ws.manager.startTag = ccpBtn1.tag;
+                    ws.manager.endTag = ccpBtn2.tag;
+                    wsBtn.enabled = YES;
+                }
+            }
+        }
+        [ws.manager.selectArr removeAllObjects];
+        [ws.selectArr addObject:abtn];
+        for (CCPCalendarButton *obj in ws.selectArr) {
+            [[ws.manager mutableArrayValueForKey:@"selectArr"] addObject:obj.date];
+        }
+    };
+}
+
+- (void)compelet {
+    if (self.manager.complete) {
+        NSMutableArray *marr = [NSMutableArray array];
+        for (NSDate *date in self.manager.selectArr) {
+            NSString *year = [NSString stringWithFormat:@"%ld",[date getYear]];
+            NSString *month = [NSString stringWithFormat:@"%02ld",[date getMonth]];
+            NSString *day = [NSString stringWithFormat:@"%02ld",[date getDay]];
+            NSString *weekString = [date weekString];
+            NSInteger week = [date getWeek];
+            NSString *ccpDate = [NSString stringWithFormat:@"%@-%@-%@",year,month,day];
+            NSArray *arr = @[ccpDate,year,month,day,weekString,@(week)];
+            CCPCalendarModel *model = [[CCPCalendarModel alloc] initWithArray:arr];
+            [marr addObject:model];
+        }
+        self.manager.complete(marr);
+        if (self.manager.close) {
+            self.manager.close();
+        }
+    }
+    
 }
 
 /*
@@ -165,17 +210,18 @@
     CGFloat btnH = 50 * scale_h;
     UIView *bottomV = [[UIView alloc] init];
     bottomV.backgroundColor = [UIColor clearColor];
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.enabled = NO;
-    btn.backgroundColor = rgba(255, 255, 255, 0.4);
-    btn.frame = CGRectMake(l_gap, t_gap, main_width - 2 * l_gap, btnH);
-    [btn setTitle:@"保存" forState:UIControlStateNormal];
-    [btn setTitle:@"保存" forState:UIControlStateDisabled];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btn setTitleColor:rgba(255, 255, 255, 0.7) forState:UIControlStateDisabled];
-    btn.layer.cornerRadius = 5 * scale_w;
-    btn.titleLabel.font = [UIFont systemFontOfSize:20 * scale_h];
-    [bottomV addSubview:btn];
+    saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    saveBtn.enabled = NO;
+    saveBtn.backgroundColor = rgba(255, 255, 255, 0.4);
+    saveBtn.frame = CGRectMake(l_gap, t_gap, main_width - 2 * l_gap, btnH);
+    [saveBtn setTitle:@"保存" forState:UIControlStateNormal];
+    [saveBtn setTitle:@"保存" forState:UIControlStateDisabled];
+    [saveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [saveBtn setTitleColor:rgba(255, 255, 255, 0.7) forState:UIControlStateDisabled];
+    saveBtn.layer.cornerRadius = 5 * scale_w;
+    saveBtn.titleLabel.font = [UIFont systemFontOfSize:20 * scale_h];
+    [saveBtn addTarget:self action:@selector(compelet) forControlEvents:UIControlEventTouchUpInside];
+    [bottomV addSubview:saveBtn];
     CGFloat H = bottomH = [bottomV getSupH] + t_gap;
     bottomV.frame = CGRectMake(0, main_height - H, main_width, H);
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, main_width, 1.0)];
@@ -233,5 +279,6 @@
     }];
     return views;
 }
+
 
 @end

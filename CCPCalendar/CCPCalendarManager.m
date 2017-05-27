@@ -19,12 +19,6 @@
 
 @implementation CCPCalendarManager
 
-- (instancetype)init {
-    if (self = [super init]) {
-        self.isShowPast = YES;
-    }
-    return self;
-}
 
 - (UIWindow *)appWindow {
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -37,53 +31,68 @@
         av.frame = CGRectMake(0, main_height, main_width, main_height);
         av.manager = self;
         [av initSubviews];
-        av.alpha = 0.0;
         [[self appWindow] addSubview:av];
     }
-    [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        av.alpha = 1.0;
+    [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         av.frame = CGRectMake(0, 0, main_width, main_height);
     } completion:nil];
 }
 
 - (closeBlock)close {
     __weak typeof(av)weekAV = av;
+    __weak typeof(self)ws = self;
     if (!_close) {
         _close = ^() {
-            [UIView animateWithDuration:.35 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [UIView animateWithDuration:.35 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
                 weekAV.frame = CGRectMake(0, main_height, main_width, main_height);
-                weekAV.alpha = 0.0;
-            } completion:nil];
+            } completion:^(BOOL finished) {
+                if (ws.clean) {
+                    ws.clean();
+                }
+            }];
         };
     }
     return _close;
 }
 
 //单选有过去
-- (void)show_signal_past {
-    self.isShowPast = YES;
-    [self av];
++ (void)show_signal_past:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = YES;
+    manager.complete = complete;
+    [manager av];
 }
-
 //多选有过去
-- (void)show_mutil_past {
-    self.isShowPast = YES;
-    self.selectType = select_type_multiple;
-    [self av];
++ (void)show_mutil_past:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = YES;
+    manager.selectType = select_type_multiple;
+    manager.complete = complete;
+    [manager av];
 }
 //单选没有过去
-- (void)show_signal {
-    self.isShowPast = NO;
-    [self av];
-    
++ (void)show_signal:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = NO;
+    manager.complete = complete;
+    [manager av];
 }
 //多选没有过去
-- (void)show_mutil {
-    self.isShowPast = NO;
-    self.selectType = select_type_multiple;
-    [self av];
++ (void)show_mutil:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = NO;
+    manager.selectType = select_type_multiple;
+    manager.complete = complete;
+    [manager av];
 }
 
+
+- (NSMutableArray *)selectArr {
+    if (!_selectArr) {
+        _selectArr = [NSMutableArray array];
+    }
+    return _selectArr;
+}
 
 - (NSDate *)createDate {
     if (!_createDate) {

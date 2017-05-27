@@ -35,7 +35,7 @@ typedef void(^cleanBlock)(void);
 //点击日期
 typedef void(^clickBlock)(NSString *dateStr, UIButton *btn);
 //选择完成
-typedef void(^completeBlock)(void);
+typedef void(^completeBlock)(NSArray *stArr);
 
 @interface CCPCalendarManager : NSObject
 //默认字体颜色
@@ -73,24 +73,25 @@ typedef void(^completeBlock)(void);
 @property (copy) clickBlock click;
 //
 @property (copy) completeBlock complete;
-/*仅在multi时保存 选择开始时间*/
-@property (nonatomic, strong) NSDate *startDate;
-/*仅在multi时保存 选择结束时间*/
-@property (nonatomic, strong) NSDate *endDate;
+/*仅在multi时保存 选择开始标记*/
+@property (nonatomic, assign) NSInteger startTag;
+/*仅在multi时保存 选择结束标记*/
+@property (nonatomic, assign) NSInteger endTag;
 /*此属性用于一段日历的生成 
  此属性为一段日历的结束日期
  */
 @property (nonatomic, strong) NSDate *createEndDate;
+//选中的日期
+@property (nonatomic, strong) NSMutableArray *selectArr;
 
-//
 //单选有过去
-- (void)show_signal_past;
++ (void)show_signal_past:(completeBlock)complete;
 //多选邮过去
-- (void)show_mutil_past;
++ (void)show_mutil_past:(completeBlock)complete;
 //单选没有过去
-- (void)show_signal;
++ (void)show_signal:(completeBlock)complete;
 //多选没有过去
-- (void)show_mutil;
++ (void)show_mutil:(completeBlock)complete;
 //
 /*------------private----*/
 //日历格式

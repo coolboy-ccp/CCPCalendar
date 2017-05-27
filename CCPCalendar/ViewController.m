@@ -21,8 +21,12 @@
 }
 
 - (IBAction)test:(id)sender {
-    CCPCalendarManager *manager = [[CCPCalendarManager alloc]init];
-    [manager show_mutil];
+    [CCPCalendarManager show_mutil:^(NSArray *stArr) {
+        [stArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"obj.ccpDate---%@",[obj valueForKey:@"ccpDate"]);
+            NSLog(@"obj.week---%@",[obj valueForKey:@"week"]);
+        }];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

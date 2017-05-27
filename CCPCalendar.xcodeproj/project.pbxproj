@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7E712C561ED714680084702E /* NSDate+CCPCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E712C551ED714680084702E /* NSDate+CCPCalendar.m */; };
+		8B6BF4BE1ED9274700F83E2A /* CCPCalendarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */; };
+		8B6BF4C11ED928D900F83E2A /* NSObject+CCPObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BF4C01ED928D900F83E2A /* NSObject+CCPObjc.m */; };
 		8B717CF31ED65D2800A78DC8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B717CF21ED65D2800A78DC8 /* main.m */; };
 		8B717CF61ED65D2800A78DC8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B717CF51ED65D2800A78DC8 /* AppDelegate.m */; };
 		8B717CF91ED65D2800A78DC8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B717CF81ED65D2800A78DC8 /* ViewController.m */; };
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		7E712C541ED714680084702E /* NSDate+CCPCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+CCPCalendar.h"; sourceTree = "<group>"; };
 		7E712C551ED714680084702E /* NSDate+CCPCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+CCPCalendar.m"; sourceTree = "<group>"; };
+		8B6BF4BC1ED9274700F83E2A /* CCPCalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCalendarModel.h; sourceTree = "<group>"; };
+		8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCalendarModel.m; sourceTree = "<group>"; };
+		8B6BF4BF1ED928D900F83E2A /* NSObject+CCPObjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+CCPObjc.h"; sourceTree = "<group>"; };
+		8B6BF4C01ED928D900F83E2A /* NSObject+CCPObjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+CCPObjc.m"; sourceTree = "<group>"; };
 		8B717CEE1ED65D2800A78DC8 /* CCPCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CCPCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B717CF21ED65D2800A78DC8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8B717CF41ED65D2800A78DC8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -83,7 +89,7 @@
 				8B717CF51ED65D2800A78DC8 /* AppDelegate.m */,
 				8B717CF71ED65D2800A78DC8 /* ViewController.h */,
 				8B717CF81ED65D2800A78DC8 /* ViewController.m */,
-				8B717D0B1ED65D5A00A78DC8 /* New Group */,
+				8B717D0B1ED65D5A00A78DC8 /* CCPCalendar */,
 				8B717CFA1ED65D2800A78DC8 /* Main.storyboard */,
 				8B717CFD1ED65D2800A78DC8 /* Assets.xcassets */,
 				8B717CFF1ED65D2800A78DC8 /* LaunchScreen.storyboard */,
@@ -101,11 +107,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8B717D0B1ED65D5A00A78DC8 /* New Group */ = {
+		8B717D0B1ED65D5A00A78DC8 /* CCPCalendar */ = {
 			isa = PBXGroup;
 			children = (
 				8B717D0C1ED65FAE00A78DC8 /* CCPCalendarManager.h */,
 				8B717D0D1ED65FAE00A78DC8 /* CCPCalendarManager.m */,
+				8B6BF4BC1ED9274700F83E2A /* CCPCalendarModel.h */,
+				8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */,
 				8B717D081ED65D5400A78DC8 /* CCPCalendarView.h */,
 				8B717D091ED65D5400A78DC8 /* CCPCalendarView.m */,
 				8B717D151ED67B6000A78DC8 /* CCPCalendarButton.h */,
@@ -118,8 +126,10 @@
 				8B8DD9CE1ED7CAC100B3573A /* UIView+CCPView.m */,
 				8B8DD9D01ED7CF6100B3573A /* UILabel+CCPLabel.h */,
 				8B8DD9D11ED7CF6100B3573A /* UILabel+CCPLabel.m */,
+				8B6BF4BF1ED928D900F83E2A /* NSObject+CCPObjc.h */,
+				8B6BF4C01ED928D900F83E2A /* NSObject+CCPObjc.m */,
 			);
-			name = "New Group";
+			name = CCPCalendar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B6BF4BE1ED9274700F83E2A /* CCPCalendarModel.m in Sources */,
 				8B717D0E1ED65FAE00A78DC8 /* CCPCalendarManager.m in Sources */,
 				8B717D171ED67B6000A78DC8 /* CCPCalendarButton.m in Sources */,
 				8B8DD9CF1ED7CAC100B3573A /* UIView+CCPView.m in Sources */,
@@ -200,6 +211,7 @@
 				8B717CF61ED65D2800A78DC8 /* AppDelegate.m in Sources */,
 				8B717CF31ED65D2800A78DC8 /* main.m in Sources */,
 				8B8DD9D21ED7CF6100B3573A /* UILabel+CCPLabel.m in Sources */,
+				8B6BF4C11ED928D900F83E2A /* NSObject+CCPObjc.m in Sources */,
 				8B717D0A1ED65D5400A78DC8 /* CCPCalendarView.m in Sources */,
 				8B717D1A1ED6875000A78DC8 /* CCPCalendarHeader.m in Sources */,
 				7E712C561ED714680084702E /* NSDate+CCPCalendar.m in Sources */,

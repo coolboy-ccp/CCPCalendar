@@ -12,9 +12,10 @@
 {
     CGFloat fontSize;
     CAShapeLayer *sl;
-    CALayer *lay;
-    CALayer *sLay;
-    CALayer *eLay;
+    CAShapeLayer *sMask;
+    CAShapeLayer *eMask;
+    CAShapeLayer *otherMask;
+    CALayer *orginMask;
 }
 @end
 
@@ -28,10 +29,20 @@
         [self setBackgroundColor:[UIColor clearColor]];
         [self addTarget:self action:@selector(action:event:) forControlEvents:UIControlEventAllTouchEvents];
         self.titleLabel.font = [UIFont systemFontOfSize:fontSize weight:1.0 * scale_w];
-        [self lay];
-        
+        orginMask = self.layer.mask;
+        [self sMask];
+        [self eMask];
+        [self otherMask];
     }
     return self;
+}
+
+- (void)addObesers {
+    if (self.manager.selectType == select_type_multiple) {
+        [self addObserver:self forKeyPath:@"manager.endTag" options:(NSKeyValueObservingOptionNew) context:nil];
+    }
+    [self addObserver:self forKeyPath:@"selected" options:NSKeyValueObservingOptionNew context:nil];
+    [self addObserver:self forKeyPath:@"backgroundColor" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)ccpDispaly {
@@ -48,27 +59,14 @@
         self.enabled = YES;
     }
     [self cirPath];
-    [self addObserver:self forKeyPath:@"selected" options:NSKeyValueObservingOptionNew context:nil];
-    [self addObserver:self forKeyPath:@"manager.endDate" options:(NSKeyValueObservingOptionNew) context:nil];
-}
-
-- (void)cirPath {
-    CGFloat radius = main_width / 20;
-    CGPoint center = CGPointMake(main_width / 14, main_width / 14);
-    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:0 endAngle:M_PI * 2 clockwise:YES];
-    sl = [CAShapeLayer layer];
-    sl.path = path.CGPath;
-    sl.lineWidth = 1.0;
-    sl.strokeColor = [UIColor clearColor].CGColor;
-    sl.fillColor = [UIColor clearColor].CGColor;
-    sl.zPosition = -1;
-    sl.bounds = self.bounds;
-    sl.position = center;
-    [sl setAnchorPoint:CGPointMake(0.5, 0.5)];
-    if ([self.date isSameTo:self.manager.createDate]) {
-        sl.strokeColor = [UIColor whiteColor].CGColor;
+    if (self.manager.createEndDate) {
+        if ([self.manager.createEndDate laterThan:self.date] || [self.manager.createEndDate isSameTo:self.date]) {
+            self.enabled = YES;
+        }
+        else {
+            self.enabled = NO;
+        }
     }
-    [self.layer addSublayer:sl];
 }
 
 - (void)action:(UIButton *)Bbtn event:(UIEvent *)event {
@@ -96,62 +94,100 @@
             sl.fillColor = [UIColor clearColor].CGColor;
         }
     }
-    else if ([keyPath isEqualToString:@"manager.endDate"]) {
-        if (self.manager.endDate) {
-            if ([self.date isSameTo:self.manager.endDate]) {
-                [self eLay];
+    else if ([keyPath isEqualToString:@"manager.endTag"]) {
+        if ([obj integerValue] != 0) {
+            self.backgroundColor = [UIColor whiteColor];
+            if (self.tag == self.manager.startTag) {
+                self.layer.mask = sMask;
+                
             }
-            else if ([self.date isSameTo:self.manager.startDate]) {
-                [self sLay];
+            else if (self.tag > self.manager.startTag && self.tag < self.manager.endTag) {
+                self.layer.mask = otherMask;
+            }
+            else if (self.tag == self.manager.endTag) {
+                self.layer.mask = eMask;
             }
             else {
-                if (![self.date laterThan:self.manager.startDate] && ![self.manager.endDate laterThan:self.date]) {
-                    [self lay];
-                }
+                self.backgroundColor = [UIColor clearColor];
             }
         }
         else {
-            [lay removeFromSuperlayer];
-            [sLay removeFromSuperlayer];
-            [eLay removeFromSuperlayer];
+            self.backgroundColor = [UIColor clearColor];
+            self.layer.mask = orginMask;
+        }
+    }
+    else if ([keyPath isEqualToString:@"backgroundColor"]) {
+        UIColor *color = (UIColor *)obj;
+        if (color == [UIColor whiteColor]) {
+            [self setTitleColor:self.manager.selected_text_color forState:UIControlStateNormal];
+        }
+        else {
+            [self setTitleColor:self.manager.normal_text_color forState:UIControlStateNormal];
         }
     }
 }
 
-- (void)lay {
-    if (!lay) {
-        lay = [CALayer layer];
-        lay.bounds = CGRectMake(0, 0, main_width / 7, main_width / 10);
-        lay.position = CGPointMake(0, main_width * 3 / 140);
-        lay.anchorPoint = CGPointMake(0, 0);
-        lay.zPosition = -1;
-        lay.backgroundColor = [UIColor whiteColor].CGColor;
-        [self.layer addSublayer:lay];
+
+- (void)sMask {
+    if (!sMask) {
+        CGFloat radius = main_width / 16;
+        CGPoint center = CGPointMake(main_width / 14, main_width / 14);
+        UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:M_PI_2 endAngle:M_PI * 3 / 2 clockwise:YES];
+        [path addLineToPoint:CGPointMake(main_width / 7,main_width / 112)];
+        [path addLineToPoint:CGPointMake(main_width / 7, main_width / 8 + main_width / 112)];
+        [path closePath];
+        sMask = [CAShapeLayer layer];
+        sMask.path = path.CGPath;
+        sMask.fillColor = [UIColor redColor].CGColor;
+        
     }
 }
 
-- (void)sLay {
-    if (!sLay) {
-        sLay = [CALayer layer];
-        sLay.bounds = CGRectMake(0, 0, main_width / 14, main_width / 10);
-        sLay.position = CGPointMake(main_width / 14, main_width / 14);
-        sLay.anchorPoint = CGPointMake(0, 0.5);
-        sLay.zPosition = -1;
-        sLay.backgroundColor = [UIColor whiteColor].CGColor;
-        [self.layer addSublayer:sLay];
+- (void)eMask {
+    if (!eMask) {
+        CGFloat radius = main_width / 16;
+        CGPoint center = CGPointMake(main_width / 14, main_width / 14);
+        UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:- M_PI_2 endAngle:M_PI_2 clockwise:YES];
+        [path addLineToPoint:CGPointMake(0, main_width / 8 + main_width / 112)];
+        [path addLineToPoint:CGPointMake(0, main_width / 112)];
+        [path closePath];
+        eMask = [CAShapeLayer layer];
+        eMask.path = path.CGPath;
+        eMask.fillColor = [UIColor redColor].CGColor;
     }
 }
 
-- (void)eLay {
-    if (!eLay) {
-        eLay = [CALayer layer];
-        eLay.bounds = CGRectMake(0, 0, main_width / 14, main_width / 10);
-        eLay.position = CGPointMake(0, main_width / 14);
-        eLay.anchorPoint = CGPointMake(0, 0.5);
-        eLay.zPosition = -1;
-        eLay.backgroundColor = [UIColor whiteColor].CGColor;
-        [self.layer addSublayer:eLay];
+- (void)otherMask {
+    if (!otherMask) {
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(0, main_width / 112)];
+        [path addLineToPoint:CGPointMake(main_width / 7, main_width / 112)];
+        [path addLineToPoint:CGPointMake(main_width / 7, main_width / 8 + main_width / 112)];
+        [path addLineToPoint:CGPointMake(0, main_width / 8 + main_width / 112)];
+        [path closePath];
+        otherMask = [CAShapeLayer layer];
+        otherMask.path = path.CGPath;
+        otherMask.fillColor = [UIColor redColor].CGColor;
     }
+}
+
+- (void)cirPath {
+    CGFloat radius = main_width / 16;
+    CGPoint center = CGPointMake(main_width / 14, main_width / 14);
+    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:center radius:radius startAngle:0 endAngle:M_PI * 2 clockwise:YES];
+    sl = [CAShapeLayer layer];
+    sl.path = path.CGPath;
+    sl.lineWidth = 1.0;
+    sl.strokeColor = [UIColor clearColor].CGColor;
+    sl.fillColor = [UIColor clearColor].CGColor;
+    sl.zPosition = -1;
+    sl.bounds = self.bounds;
+    sl.position = center;
+    [sl setAnchorPoint:CGPointMake(0.5, 0.5)];
+    if ([self.date isSameTo:self.manager.createDate]) {
+        sl.strokeColor = [UIColor whiteColor].CGColor;
+    }
+    [self.layer addSublayer:sl];
 }
 
 

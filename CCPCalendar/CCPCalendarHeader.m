@@ -8,7 +8,7 @@
 
 #import "CCPCalendarHeader.h"
 #import "UIView+CCPView.h"
-
+#import "NSDate+CCPCalendar.h"
 
 @interface CCPCalendarHeader()
 {
@@ -32,6 +32,7 @@
         big_l_gap = big_r_gap = scale_w * 25.0;
         t_gap = scale_h * 15;
         self.backgroundColor = [UIColor clearColor];
+        [self addObserver:self forKeyPath:@"manager.selectArr" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -52,8 +53,8 @@
  */
 - (void)functionBtns {
     l_btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [l_btn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [l_btn setTitle:@"cancle" forState:UIControlStateNormal];
+    [l_btn setTitle:@"X" forState:UIControlStateNormal];
+    l_btn.titleLabel.font = [UIFont systemFontOfSize:scale_w * 20];
     l_btn.frame = CGRectMake(l_gap, t_gap, scale_w * 25, scale_w * 25);
     [l_btn addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:l_btn];
@@ -98,7 +99,6 @@
         weekLabel.text = week;
         [self addSubview:weekLabel];
     }
-//    UIView *line = [UIView alloc] initWithFrame:CGRectMake(0, y, main_width, <#CGFloat height#>);
 }
 
 //中间斜线
@@ -144,11 +144,31 @@
 }
 
 - (void)clear {
+    [[self.manager mutableArrayValueForKey:@"selectArr"] removeAllObjects];
     if (self.manager.clean) {
         self.manager.clean();
     }
 }
 
-
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"manager.selectArr"]) {
+        NSArray *arr = self.manager.selectArr.copy;
+        if (arr.count == 0) {
+            self.manager.startTitle = self.manager.endTitle = nil;
+        }
+        else if (arr.count == 1) {
+            self.manager.endTitle = nil;
+            NSDate *date = arr.firstObject;
+            self.manager.startTitle = [NSString stringWithFormat:@"%ld月%02ld日\n%@",[date getMonth],[date getDay],[date weekString]];
+        }
+        else if (arr.count == 2){
+            NSDate *date1 = arr.firstObject;
+            NSDate *date2 = arr[1];
+            self.manager.startTitle = [NSString stringWithFormat:@"%ld月%02ld日\n%@",[date1 getMonth],[date1 getDay],[date1 weekString]];
+            self.manager.endTitle = [NSString stringWithFormat:@"%ld月%02ld日\n%@",[date2 getMonth],[date2 getDay],[date2 weekString]];
+        }
+        [self displayLabel];
+    }
+}
 
 @end
