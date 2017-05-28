@@ -144,14 +144,7 @@ static const void *ccp_calendar = &ccp_calendar;
 - (BOOL)laterThan:(NSDate *)date {
     NSString *str1 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[self getYear],(long)[self getMonth],(long)[self getDay]];
     NSString *str2 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[date getYear:date],(long)[date getMonth:date],(long)[date getDay:date]];
-    if ([str1 integerValue] > [str2 integerValue]) {
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)isEarly:(NSDate *)date {
-    if ([self compare:date] == NSOrderedAscending) {
+    if ([str1 compare:str2] == NSOrderedAscending) {
         return YES;
     }
     return NO;

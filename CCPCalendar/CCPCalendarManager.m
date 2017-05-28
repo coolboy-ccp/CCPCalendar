@@ -55,37 +55,6 @@
     return _close;
 }
 
-//单选有过去
-+ (void)show_signal_past:(completeBlock)complete {
-    CCPCalendarManager *manager = [CCPCalendarManager new];
-    manager.isShowPast = YES;
-    manager.complete = complete;
-    [manager av];
-}
-//多选有过去
-+ (void)show_mutil_past:(completeBlock)complete {
-    CCPCalendarManager *manager = [CCPCalendarManager new];
-    manager.isShowPast = YES;
-    manager.selectType = select_type_multiple;
-    manager.complete = complete;
-    [manager av];
-}
-//单选没有过去
-+ (void)show_signal:(completeBlock)complete {
-    CCPCalendarManager *manager = [CCPCalendarManager new];
-    manager.isShowPast = NO;
-    manager.complete = complete;
-    [manager av];
-}
-//多选没有过去
-+ (void)show_mutil:(completeBlock)complete {
-    CCPCalendarManager *manager = [CCPCalendarManager new];
-    manager.isShowPast = NO;
-    manager.selectType = select_type_multiple;
-    manager.complete = complete;
-    [manager av];
-}
-
 
 - (NSMutableArray *)selectArr {
     if (!_selectArr) {
@@ -134,5 +103,37 @@
         _endTitle = @"结束\n日期";
     }
     return _endTitle;
+}
+
+
+//单选有过去
++ (void)show_signal_past:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = YES;
+    manager.complete = complete;
+    [manager av];
+}
+//多选有过去
++ (void)show_mutil_past:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = YES;
+    manager.selectType = select_type_multiple;
+    manager.complete = complete;
+    [manager av];
+}
+//单选没有过去
++ (void)show_signal:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = NO;
+    manager.complete = complete;
+    [manager av];
+}
+//多选没有过去
++ (void)show_mutil:(completeBlock)complete {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.isShowPast = NO;
+    manager.selectType = select_type_multiple;
+    manager.complete = complete;
+    [manager av];
 }
 @end

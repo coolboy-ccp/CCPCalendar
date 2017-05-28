@@ -21,15 +21,15 @@
 }
 
 - (IBAction)test:(id)sender {
-//    [CCPCalendarManager show_mutil:^(NSArray *stArr) {
-//        [stArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            NSLog(@"obj.ccpDate---%@",[obj valueForKey:@"ccpDate"]);
-//            NSLog(@"obj.week---%@",[obj valueForKey:@"week"]);
-//        }];
-//    }];
-    [CCPCalendarManager show_signal_past:^(NSArray *stArr) {
-        
+    [CCPCalendarManager show_mutil:^(NSArray *stArr) {
+        [stArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"obj.ccpDate---%@",[obj valueForKey:@"ccpDate"]);
+            NSLog(@"obj.week---%@",[obj valueForKey:@"week"]);
+        }];
     }];
+//    [CCPCalendarManager show_signal_past:^(NSArray *stArr) {
+//        
+//    }];
 }
 
 - (void)didReceiveMemoryWarning {

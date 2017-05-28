@@ -28,7 +28,7 @@
         self.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [self setBackgroundColor:[UIColor clearColor]];
         [self addTarget:self action:@selector(action:event:) forControlEvents:UIControlEventAllTouchEvents];
-        self.titleLabel.font = [UIFont systemFontOfSize:fontSize weight:1.0 * scale_w];
+        self.titleLabel.font = [UIFont systemFontOfSize:fontSize];
         orginMask = self.layer.mask;
         [self sMask];
         [self eMask];

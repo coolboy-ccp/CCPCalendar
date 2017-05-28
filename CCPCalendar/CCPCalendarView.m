@@ -11,14 +11,13 @@
 #import "NSDate+CCPCalendar.h"
 #import "UIView+CCPView.h"
 #import "CCPCalendarModel.h"
-#import "CCPCalendarScorllView.h"
+#import "CCPCalendarTable.h"
 
-@interface CCPCalendarView()<UIScrollViewDelegate>
+@interface CCPCalendarView()
 {
     CGFloat bottomH;
     //底部按钮
     UIButton *saveBtn;
-    CCPCalendarScorllView *scr;
     CGFloat scrStart;
 
 }
@@ -121,26 +120,9 @@
 }
 
 - (void)createScr {
-    scr = [[CCPCalendarScorllView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerView.frame), main_width, main_height - bottomH - CGRectGetMaxY(self.headerView.frame))];
-    scr.delegate = self;
-    scr.manager = self.manager;
-    [scr initSub];
-    [self addSubview:scr];
+    CCPCalendarTable *table = [[CCPCalendarTable alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerView.frame), main_width, main_height - bottomH - CGRectGetMaxY(self.headerView.frame)) manager:self.manager];
+    [self addSubview:table];
 }
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    scrStart = scrollView.contentOffset.y;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrStart - scrollView.contentOffset.y > 0) {
-        scr.direction = @"up";
-    }
-    else {
-        scr.direction = @"down";
-    }
-}
-
 
 
 @end

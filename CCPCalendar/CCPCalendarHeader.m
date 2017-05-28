@@ -60,7 +60,7 @@
     [self addSubview:l_btn];
     r_btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [r_btn setTitle:@"clear" forState:UIControlStateNormal];
-    r_btn.titleLabel.font = [UIFont systemFontOfSize:14.0 * scale_w weight:1.0 * scale_w];
+    r_btn.titleLabel.font = [UIFont systemFontOfSize:14.0 * scale_w];
     r_btn.titleLabel.textColor = [UIColor whiteColor];
     [r_btn addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
     r_btn.frame = CGRectMake(main_width - r_gap - [self r_btn_w], t_gap, [self r_btn_w], scale_w * 25);
@@ -118,7 +118,7 @@
 
 - (CGFloat)r_btn_w {
     NSString *tt = r_btn.titleLabel.text;
-    CGRect rect = [tt boundingRectWithSize:CGSizeMake(1000, 25 * scale_w) options:NSStringDrawingUsesFontLeading attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont systemFontOfSize:14 * scale_w weight:1.0 * scale_w]} context:nil];
+    CGRect rect = [tt boundingRectWithSize:CGSizeMake(1000, 25 * scale_w) options:NSStringDrawingUsesFontLeading attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont systemFontOfSize:14 * scale_w]} context:nil];
     return rect.size.width;
 }
 

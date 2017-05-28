@@ -54,24 +54,22 @@ typedef void(^completeBlock)(NSArray *stArr);
 @property (nonatomic, strong) UIColor *selected_bg_color;
 //日历创建的日期
 @property (nonatomic, strong) NSDate *createDate;
-//日历返回的格式
-@property (nonatomic, strong) NSString *backDateFormat;
 //开始标题
 @property (nonatomic, strong) NSString *startTitle;
 //结束标题
 @property (nonatomic, strong) NSString *endTitle;
 //是否需要显示生成日期之前的日历
 @property (nonatomic, assign) BOOL isShowPast;
-//
+//日历类型 单选 多选
 @property (nonatomic, assign) CCPCalendar_select_type selectType;
 
-//
+//关闭block
 @property (copy, nonatomic) closeBlock close;
-//
+//清除block
 @property (copy) cleanBlock clean;
-//
+//点击日期按钮block
 @property (copy) clickBlock click;
-//
+//结束选择block
 @property (copy) completeBlock complete;
 /*仅在multi时保存 选择开始标记*/
 @property (nonatomic, assign) NSInteger startTag;
@@ -92,9 +90,6 @@ typedef void(^completeBlock)(NSArray *stArr);
 + (void)show_signal:(completeBlock)complete;
 //多选没有过去
 + (void)show_mutil:(completeBlock)complete;
-//
-/*------------private----*/
-//日历格式
-@property (nonatomic, strong, readonly) NSDateFormatter *dateFormat;
+
 
 @end

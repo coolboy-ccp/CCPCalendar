@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E1B68361ED9D266003BF2AE /* CCPCalendarScorllView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E1B68351ED9D266003BF2AE /* CCPCalendarScorllView.m */; };
 		7E712C561ED714680084702E /* NSDate+CCPCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E712C551ED714680084702E /* NSDate+CCPCalendar.m */; };
+		7EF38A9E1EDB116E00FB7ABE /* CCPCalendarCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF38A9D1EDB116E00FB7ABE /* CCPCalendarCellTableViewCell.m */; };
+		7EF38AA11EDB118300FB7ABE /* CCPCalendarTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF38AA01EDB118300FB7ABE /* CCPCalendarTable.m */; };
 		8B6BF4BE1ED9274700F83E2A /* CCPCalendarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */; };
 		8B6BF4C11ED928D900F83E2A /* NSObject+CCPObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BF4C01ED928D900F83E2A /* NSObject+CCPObjc.m */; };
 		8B717CF31ED65D2800A78DC8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B717CF21ED65D2800A78DC8 /* main.m */; };
@@ -26,10 +27,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7E1B68341ED9D266003BF2AE /* CCPCalendarScorllView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCalendarScorllView.h; sourceTree = "<group>"; };
-		7E1B68351ED9D266003BF2AE /* CCPCalendarScorllView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCalendarScorllView.m; sourceTree = "<group>"; };
 		7E712C541ED714680084702E /* NSDate+CCPCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+CCPCalendar.h"; sourceTree = "<group>"; };
 		7E712C551ED714680084702E /* NSDate+CCPCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+CCPCalendar.m"; sourceTree = "<group>"; };
+		7EF38A9C1EDB116E00FB7ABE /* CCPCalendarCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCalendarCellTableViewCell.h; sourceTree = "<group>"; };
+		7EF38A9D1EDB116E00FB7ABE /* CCPCalendarCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCalendarCellTableViewCell.m; sourceTree = "<group>"; };
+		7EF38A9F1EDB118300FB7ABE /* CCPCalendarTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCalendarTable.h; sourceTree = "<group>"; };
+		7EF38AA01EDB118300FB7ABE /* CCPCalendarTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCalendarTable.m; sourceTree = "<group>"; };
 		8B6BF4BC1ED9274700F83E2A /* CCPCalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCalendarModel.h; sourceTree = "<group>"; };
 		8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCalendarModel.m; sourceTree = "<group>"; };
 		8B6BF4BF1ED928D900F83E2A /* NSObject+CCPObjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+CCPObjc.h"; sourceTree = "<group>"; };
@@ -119,8 +122,10 @@
 				8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */,
 				8B717D081ED65D5400A78DC8 /* CCPCalendarView.h */,
 				8B717D091ED65D5400A78DC8 /* CCPCalendarView.m */,
-				7E1B68341ED9D266003BF2AE /* CCPCalendarScorllView.h */,
-				7E1B68351ED9D266003BF2AE /* CCPCalendarScorllView.m */,
+				7EF38A9C1EDB116E00FB7ABE /* CCPCalendarCellTableViewCell.h */,
+				7EF38A9D1EDB116E00FB7ABE /* CCPCalendarCellTableViewCell.m */,
+				7EF38A9F1EDB118300FB7ABE /* CCPCalendarTable.h */,
+				7EF38AA01EDB118300FB7ABE /* CCPCalendarTable.m */,
 				8B717D151ED67B6000A78DC8 /* CCPCalendarButton.h */,
 				8B717D161ED67B6000A78DC8 /* CCPCalendarButton.m */,
 				8B717D181ED6875000A78DC8 /* CCPCalendarHeader.h */,
@@ -209,9 +214,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EF38AA11EDB118300FB7ABE /* CCPCalendarTable.m in Sources */,
 				8B6BF4BE1ED9274700F83E2A /* CCPCalendarModel.m in Sources */,
 				8B717D0E1ED65FAE00A78DC8 /* CCPCalendarManager.m in Sources */,
-				7E1B68361ED9D266003BF2AE /* CCPCalendarScorllView.m in Sources */,
 				8B717D171ED67B6000A78DC8 /* CCPCalendarButton.m in Sources */,
 				8B8DD9CF1ED7CAC100B3573A /* UIView+CCPView.m in Sources */,
 				8B717CF91ED65D2800A78DC8 /* ViewController.m in Sources */,
@@ -221,6 +226,7 @@
 				8B6BF4C11ED928D900F83E2A /* NSObject+CCPObjc.m in Sources */,
 				8B717D0A1ED65D5400A78DC8 /* CCPCalendarView.m in Sources */,
 				8B717D1A1ED6875000A78DC8 /* CCPCalendarHeader.m in Sources */,
+				7EF38A9E1EDB116E00FB7ABE /* CCPCalendarCellTableViewCell.m in Sources */,
 				7E712C561ED714680084702E /* NSDate+CCPCalendar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
