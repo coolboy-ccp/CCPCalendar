@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E1B68361ED9D266003BF2AE /* CCPCalendarScorllView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E1B68351ED9D266003BF2AE /* CCPCalendarScorllView.m */; };
 		7E712C561ED714680084702E /* NSDate+CCPCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E712C551ED714680084702E /* NSDate+CCPCalendar.m */; };
 		8B6BF4BE1ED9274700F83E2A /* CCPCalendarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */; };
 		8B6BF4C11ED928D900F83E2A /* NSObject+CCPObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B6BF4C01ED928D900F83E2A /* NSObject+CCPObjc.m */; };
@@ -25,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E1B68341ED9D266003BF2AE /* CCPCalendarScorllView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCalendarScorllView.h; sourceTree = "<group>"; };
+		7E1B68351ED9D266003BF2AE /* CCPCalendarScorllView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPCalendarScorllView.m; sourceTree = "<group>"; };
 		7E712C541ED714680084702E /* NSDate+CCPCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+CCPCalendar.h"; sourceTree = "<group>"; };
 		7E712C551ED714680084702E /* NSDate+CCPCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+CCPCalendar.m"; sourceTree = "<group>"; };
 		8B6BF4BC1ED9274700F83E2A /* CCPCalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPCalendarModel.h; sourceTree = "<group>"; };
@@ -116,6 +119,8 @@
 				8B6BF4BD1ED9274700F83E2A /* CCPCalendarModel.m */,
 				8B717D081ED65D5400A78DC8 /* CCPCalendarView.h */,
 				8B717D091ED65D5400A78DC8 /* CCPCalendarView.m */,
+				7E1B68341ED9D266003BF2AE /* CCPCalendarScorllView.h */,
+				7E1B68351ED9D266003BF2AE /* CCPCalendarScorllView.m */,
 				8B717D151ED67B6000A78DC8 /* CCPCalendarButton.h */,
 				8B717D161ED67B6000A78DC8 /* CCPCalendarButton.m */,
 				8B717D181ED6875000A78DC8 /* CCPCalendarHeader.h */,
@@ -163,6 +168,7 @@
 				TargetAttributes = {
 					8B717CED1ED65D2800A78DC8 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = P4HZAY5333;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -205,6 +211,7 @@
 			files = (
 				8B6BF4BE1ED9274700F83E2A /* CCPCalendarModel.m in Sources */,
 				8B717D0E1ED65FAE00A78DC8 /* CCPCalendarManager.m in Sources */,
+				7E1B68361ED9D266003BF2AE /* CCPCalendarScorllView.m in Sources */,
 				8B717D171ED67B6000A78DC8 /* CCPCalendarButton.m in Sources */,
 				8B8DD9CF1ED7CAC100B3573A /* UIView+CCPView.m in Sources */,
 				8B717CF91ED65D2800A78DC8 /* ViewController.m in Sources */,
@@ -332,6 +339,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = P4HZAY5333;
 				INFOPLIST_FILE = CCPCalendar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ccp.CCPCalendar;
@@ -343,6 +351,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = P4HZAY5333;
 				INFOPLIST_FILE = CCPCalendar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ccp.CCPCalendar;

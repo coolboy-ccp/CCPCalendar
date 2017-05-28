@@ -7,10 +7,21 @@
 //
 
 #import "NSDate+CCPCalendar.h"
+#import <objc/runtime.h>
+
+static const void *ccp_calendar = &ccp_calendar;
 
 @implementation NSDate (CCPCalendar)
 
 /*------private--------*/
+
+- (NSCalendar *)cld {
+    return objc_getAssociatedObject(self, ccp_calendar);
+}
+
+- (void)setCld:(NSCalendar *)cld {
+    objc_setAssociatedObject(self, ccp_calendar, cld, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
 
 - (NSCalendar *)calendar {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -21,6 +32,7 @@
 
 - (NSDateComponents *)compts:(NSDate *)date {
     NSDateComponents *compts = [[self calendar] components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday fromDate:date];
+    compts.timeZone = [NSTimeZone localTimeZone];
     return compts;
 }
 
@@ -131,12 +143,20 @@
 //是否晚于当前日期 精确到日
 - (BOOL)laterThan:(NSDate *)date {
     NSString *str1 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[self getYear],(long)[self getMonth],(long)[self getDay]];
-    NSString *str2 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[self getYear:date],(long)[self getMonth:date],(long)[self getDay:date]];
-    if ([str1 compare:str2] == NSOrderedAscending) {
+    NSString *str2 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[date getYear:date],(long)[date getMonth:date],(long)[date getDay:date]];
+    if ([str1 integerValue] > [str2 integerValue]) {
         return YES;
     }
     return NO;
 }
+
+- (BOOL)isEarly:(NSDate *)date {
+    if ([self compare:date] == NSOrderedAscending) {
+        return YES;
+    }
+    return NO;
+}
+
 
 - (NSString *)weekString {
     NSDateComponents *compts = [self compts:self];

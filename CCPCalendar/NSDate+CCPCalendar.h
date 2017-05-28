@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface NSDate (CCPCalendar)
+
+@property (nonatomic, strong) NSCalendar *cld;
 //每月第一天的星期
 - (NSInteger)firstDay_week;
 //每月最后一天的星期
@@ -37,5 +39,6 @@
 - (BOOL)laterThan:(NSDate *)date;
 //星期转文字
 - (NSString *)weekString;
+- (BOOL)isEarly:(NSDate *)date;
 
 @end
