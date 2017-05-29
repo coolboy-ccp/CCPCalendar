@@ -119,10 +119,25 @@
     
 }
 
+//日历部分
 - (void)createScr {
     CCPCalendarTable *table = [[CCPCalendarTable alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerView.frame), main_width, main_height - bottomH - CGRectGetMaxY(self.headerView.frame)) manager:self.manager];
     [self addSubview:table];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setTitle:@"create date" forState:UIControlStateNormal];
+    btn.layer.borderColor = [UIColor whiteColor].CGColor;
+    btn.layer.borderWidth = 1.0;
+    btn.layer.cornerRadius = 3.0;
+    btn.frame = CGRectMake(main_width - 120, CGRectGetMinY(table.frame) + 10, 110, 30);
+    [btn addTarget:self action:@selector(scrToCreate) forControlEvents:UIControlEventTouchUpInside];
+    btn.backgroundColor = [UIColor orangeColor];
+    [self addSubview:btn];
 }
 
+- (void)scrToCreate {
+    if (self.manager.scrToCreateDate) {
+        self.manager.scrToCreateDate();
+    }
+}
 
 @end

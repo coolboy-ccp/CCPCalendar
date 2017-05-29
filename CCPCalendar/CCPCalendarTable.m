@@ -36,8 +36,34 @@
             }];
             [self setContentOffset:CGPointMake(0, y)];
         }
+        [self scrToCreate];
+        self.bounces = NO;
     }
     return self;
+}
+
+
+
+
+
+- (void)scrToCreate {
+    typeof(self)ws = self;
+    self.manager.scrToCreateDate = ^() {
+        if (ws.manager.isShowPast) {
+            NSInteger a = ws.dates.count / 2;
+            __block CGFloat y = 0;
+            [ws.dates enumerateObjectsUsingBlock:^(NSDate * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (idx < a) {
+                    y += [ws getHWithDate:obj];
+                }
+            }];
+            [ws setContentOffset:CGPointMake(0, y) animated:YES];
+        }
+        else {
+            [ws setContentOffset:CGPointMake(0, 0) animated:YES];
+        }
+    };
+   
 }
 
 - (NSArray<NSDate *> *)dates {

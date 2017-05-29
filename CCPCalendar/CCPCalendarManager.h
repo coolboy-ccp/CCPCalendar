@@ -71,6 +71,8 @@ typedef void(^completeBlock)(NSArray *stArr);
 @property (copy) clickBlock click;
 //结束选择block
 @property (copy) completeBlock complete;
+//滚动到指定创建日历的日期位置
+@property (copy) cleanBlock scrToCreateDate;
 /*仅在multi时保存 选择开始标记*/
 @property (nonatomic, assign) NSInteger startTag;
 /*仅在multi时保存 选择结束标记*/
