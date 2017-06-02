@@ -12,5 +12,6 @@
 @interface CCPCalendarTable : UITableView<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) CCPCalendarManager *manager;
 @property (nonatomic, strong) NSArray<NSDate *>* dates;
+@property (nonatomic, strong) NSMutableArray *exitViews;
 - (instancetype)initWithFrame:(CGRect)frame manager:(CCPCalendarManager *)manager;
 @end

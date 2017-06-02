@@ -14,17 +14,13 @@
 @implementation CCPCalendarCellTableViewCell
 
 
-- (void)setDate:(NSDate *)date {
-    NSCAssert(self.manager, @"manager can't be nil");
-    _date = date;
-    [self createDateView:date];
-    _selectArr = [NSMutableArray array];
-}
 /*
  * 生成一个月的日历
  */
-- (void)createDateView:(NSDate *)date {
+- (UIView *)createDateView:(NSDate *)date {
     UIView *dateSupV = [[UIView alloc] init];
+    self.backgroundColor = [UIColor clearColor];
+    self.contentView.backgroundColor = [UIColor clearColor];
     CGFloat t_gap = 15 * scale_h;
     CGFloat l_gap = 25 * scale_w;
     CGFloat label_h = 24 * scale_h;
@@ -65,12 +61,20 @@
         }
         [btn addObesers];
         [dateSupV addSubview:btn];
+//        btn.selected = NO;
+//        [self.manager.selectArr enumerateObjectsUsingBlock:^(NSDate *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if ([btn.date isSameTo:obj]) {
+//                btn.selected = YES;
+//                *stop = YES;
+//            }
+//        }];
     }
-    dateSupV.backgroundColor = [UIColor orangeColor];
+    dateSupV.backgroundColor = [UIColor clearColor];
     [self managerClean];
     CGFloat h = [dateSupV getSupH];
     dateSupV.frame = CGRectMake(0, 0, main_width, h);
     [self.contentView addSubview:dateSupV];
+    return dateSupV;
 }
 
 //清除
@@ -79,11 +83,11 @@
     self.manager.clean = ^() {
         ws.manager.startTitle = ws.manager.endTitle = nil;
         ws.manager.startTag = ws.manager.endTag = 0;
-        for (CCPCalendarButton *btn in ws.selectArr) {
+        for (CCPCalendarButton *btn in ws.manager.selectBtns) {
             btn.manager = ws.manager;
             btn.selected = NO;
         }
-        [ws.selectArr removeAllObjects];
+        [ws.manager.selectBtns removeAllObjects];
     };
 }
 
@@ -92,27 +96,27 @@
 //按钮点击
 - (void)manageClick {
     __weak typeof(self)ws = self;
-    self.manager.click = ^(NSString *str, UIButton *abtn) {
+    self.manager.click = ^(UIButton *abtn) {
         if (ws.manager.selectType == 0) {
-            if (ws.selectArr.count > 0) {
-                UIButton *lastBtn = ws.selectArr.firstObject;
+            if (ws.manager.selectBtns.count > 0) {
+                UIButton *lastBtn = ws.manager.selectBtns.firstObject;
                 if (abtn == lastBtn) {
                     return;
                 }
                 lastBtn.selected = NO;
-                [ws.selectArr removeAllObjects];
+                [ws.manager.selectBtns removeAllObjects];
             }
         }
         else if (ws.manager.selectType == 1) {
-            if (ws.selectArr.count > 1) {
-                for (UIButton *lastBtn in ws.selectArr) {
+            if (ws.manager.selectBtns.count > 1) {
+                for (UIButton *lastBtn in ws.manager.selectBtns) {
                     lastBtn.selected = NO;
                 }
-                [ws.selectArr removeAllObjects];
+                [ws.manager.selectBtns removeAllObjects];
                 ws.manager.endTag = ws.manager.startTag = 0;
             }
-            else if (ws.selectArr.count > 0) {
-                UIButton *lastBtn = ws.selectArr.firstObject;
+            else if (ws.manager.selectBtns.count > 0) {
+                UIButton *lastBtn = ws.manager.selectBtns.firstObject;
                 CCPCalendarButton *ccpBtn1 = (CCPCalendarButton *)lastBtn;
                 CCPCalendarButton *ccpBtn2 = (CCPCalendarButton *)abtn;
                 if (ccpBtn1 == ccpBtn2) {
@@ -120,7 +124,7 @@
                 }
                 if (![ccpBtn1.date laterThan:ccpBtn2.date]) {
                     ccpBtn1.selected = NO;
-                    [ws.selectArr removeObject:ccpBtn1];
+                    [ws.manager.selectBtns removeObject:ccpBtn1];
                 }
                 else {
                     ws.manager.startTag = ccpBtn1.tag;
@@ -129,10 +133,13 @@
             }
         }
         [ws.manager.selectArr removeAllObjects];
-        [ws.selectArr addObject:abtn];
-        for (CCPCalendarButton *obj in ws.selectArr) {
+        [ws.manager.selectBtns addObject:abtn];
+        for (CCPCalendarButton *obj in ws.manager.selectBtns) {
             [[ws.manager mutableArrayValueForKey:@"selectArr"] addObject:obj.date];
         }
     };
 }
+
+
+
 @end

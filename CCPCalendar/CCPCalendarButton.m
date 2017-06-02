@@ -46,7 +46,12 @@
 }
 
 - (void)ccpDispaly {
-    [self setTitleColor:self.manager.normal_text_color forState:UIControlStateNormal];
+    if ([self.date isSameTo:self.manager.createDate]) {
+        [self setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    }
+    else {
+        [self setTitleColor:self.manager.normal_text_color forState:UIControlStateNormal];
+    }
     [self setTitleColor:self.manager.selected_text_color forState:UIControlStateSelected];
     [self setTitleColor:self.manager.disable_text_color forState:UIControlStateDisabled];
     if ([self.date laterThan:self.manager.createDate]) {
@@ -58,6 +63,7 @@
     if (self.manager.isShowPast) {
         self.enabled = YES;
     }
+    
     [self cirPath];
     if (self.manager.createEndDate) {
         if ([self.manager.createEndDate laterThan:self.date] || [self.manager.createEndDate isSameTo:self.date]) {
@@ -79,7 +85,7 @@
         sl.transform = CATransform3DIdentity;
         Bbtn.selected = YES;
         if (self.manager.click) {
-            self.manager.click(self.titleLabel.text,self);
+            self.manager.click(self);
         }
     }
 }
@@ -96,7 +102,7 @@
     }
     else if ([keyPath isEqualToString:@"manager.endTag"]) {
         if ([obj integerValue] != 0) {
-            self.backgroundColor = [UIColor whiteColor];
+            self.backgroundColor = rgba(255, 255, 255, 0.2);;
             if (self.tag == self.manager.startTag) {
                 self.layer.mask = sMask;
                 
@@ -119,10 +125,16 @@
     else if ([keyPath isEqualToString:@"backgroundColor"]) {
         UIColor *color = (UIColor *)obj;
         if (color == [UIColor whiteColor]) {
+            
             [self setTitleColor:self.manager.selected_text_color forState:UIControlStateNormal];
+        }
+        else {if ([self.date isSameTo:self.manager.createDate]) {
+            [self setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         }
         else {
             [self setTitleColor:self.manager.normal_text_color forState:UIControlStateNormal];
+        }
+           // [self setTitleColor:self.manager.normal_text_color forState:UIControlStateNormal];
         }
     }
 }
@@ -184,11 +196,18 @@
     sl.bounds = self.bounds;
     sl.position = center;
     [sl setAnchorPoint:CGPointMake(0.5, 0.5)];
-    if ([self.date isSameTo:self.manager.createDate]) {
-        sl.strokeColor = [UIColor whiteColor].CGColor;
-    }
+//    if ([self.date isSameTo:self.manager.createDate]) {
+//        sl.strokeColor = [UIColor whiteColor].CGColor;
+//    }
     [self.layer addSublayer:sl];
 }
 
 
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"selected"];
+    [self removeObserver:self forKeyPath:@"backgroundColor"];
+    if (self.manager.selectType == select_type_multiple) {
+        [self removeObserver:self forKeyPath:@"manager.endTag"];
+    }
+}
 @end

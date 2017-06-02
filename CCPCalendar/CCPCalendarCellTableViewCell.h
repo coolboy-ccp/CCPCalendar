@@ -11,6 +11,8 @@
 
 @interface CCPCalendarCellTableViewCell : UITableViewCell
 @property (nonatomic, strong) CCPCalendarManager *manager;
-@property (nonatomic, strong) NSMutableArray *selectArr;
-@property (nonatomic, strong) NSDate *date;
+/*
+ * 生成一个月的日历
+ */
+- (UIView *)createDateView:(NSDate *)date;
 @end

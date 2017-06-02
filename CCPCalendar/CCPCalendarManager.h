@@ -13,8 +13,7 @@
 #define main_width  [UIScreen mainScreen].bounds.size.width
 #define main_height [UIScreen mainScreen].bounds.size.height
 #define main_bounds [UIScreen mainScreen].bounds
-
-#define rgba(r,g,b,a) [UIColor colorWithRed:r / 255.0 green:g / 255.0 blue:b / 255.0 alpha:a]
+#define rgba(r,g,b,a)[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a/1.0]
 //相对iphone6布局
 #define scale_w main_width / 375.0
 #define scale_h main_height / 667.0
@@ -33,9 +32,9 @@ typedef void(^closeBlock)(void);
 //清除
 typedef void(^cleanBlock)(void);
 //点击日期
-typedef void(^clickBlock)(NSString *dateStr, UIButton *btn);
+typedef void(^clickBlock)(UIButton *btn);
 //选择完成
-typedef void(^completeBlock)(NSArray *stArr);
+typedef void(^completeBlock)(NSArray <__kindof NSObject *> *stArr);
 
 @interface CCPCalendarManager : NSObject
 //默认字体颜色
@@ -83,6 +82,8 @@ typedef void(^completeBlock)(NSArray *stArr);
 @property (nonatomic, strong) NSDate *createEndDate;
 //选中的日期
 @property (nonatomic, strong) NSMutableArray *selectArr;
+//
+@property (nonatomic, strong) NSMutableArray *selectBtns;
 
 //单选有过去
 + (void)show_signal_past:(completeBlock)complete;
@@ -92,6 +93,15 @@ typedef void(^completeBlock)(NSArray *stArr);
 + (void)show_signal:(completeBlock)complete;
 //多选没有过去
 + (void)show_mutil:(completeBlock)complete;
+
+//单选有过去
+- (void)show_signal_past:(completeBlock)complete;
+//多选有过去
+- (void)show_mutil_past:(completeBlock)complete;
+//单选没有过去
+- (void)show_signal:(completeBlock)complete;
+//多选没有过去
+- (void)show_mutil:(completeBlock)complete;
 
 
 @end

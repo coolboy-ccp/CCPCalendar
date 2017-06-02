@@ -30,7 +30,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.backgroundColor = [UIColor orangeColor];
+        //self.backgroundColor = [UIColor clearColor];
         self.selectArr = [NSMutableArray array];
     }
     return self;
@@ -70,6 +70,22 @@
 - (void)compelet {
     if (self.manager.complete) {
         NSMutableArray *marr = [NSMutableArray array];
+            if (self.manager.selectType == select_type_single) {
+                if (self.manager.selectArr.count == 0) {
+                    if (self.manager.close) {
+                        self.manager.close();
+                    }
+                    return;
+                }
+            }
+            else if (self.manager.selectType == select_type_multiple) {
+                if (self.manager.selectArr.count < 2) {
+                    if (self.manager.close) {
+                        self.manager.close();
+                    }
+                    return;
+                }
+            }
         for (NSDate *date in self.manager.selectArr) {
             NSString *year = [NSString stringWithFormat:@"%ld",[date getYear]];
             NSString *month = [NSString stringWithFormat:@"%02ld",[date getMonth]];
@@ -93,15 +109,13 @@
  * 底部
  */
 - (void)createBottomView {
-    CGFloat l_gap = 20 * scale_w;
     CGFloat t_gap = 15 * scale_h;
     CGFloat btnH = 50 * scale_h;
     UIView *bottomV = [[UIView alloc] init];
     bottomV.backgroundColor = [UIColor clearColor];
     saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    saveBtn.enabled = NO;
-    saveBtn.backgroundColor = rgba(255, 255, 255, 0.4);
-    saveBtn.frame = CGRectMake(l_gap, t_gap, main_width - 2 * l_gap, btnH);
+    saveBtn.backgroundColor = rgba(255, 255, 255, 0.2);
+    saveBtn.frame = CGRectMake(0, t_gap, main_width, btnH);
     [saveBtn setTitle:@"保存" forState:UIControlStateNormal];
     [saveBtn setTitle:@"保存" forState:UIControlStateDisabled];
     [saveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -110,11 +124,8 @@
     saveBtn.titleLabel.font = [UIFont systemFontOfSize:20 * scale_h];
     [saveBtn addTarget:self action:@selector(compelet) forControlEvents:UIControlEventTouchUpInside];
     [bottomV addSubview:saveBtn];
-    CGFloat H = bottomH = [bottomV getSupH] + t_gap;
+    CGFloat H = bottomH = [bottomV getSupH];
     bottomV.frame = CGRectMake(0, main_height - H, main_width, H);
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, main_width, 1.0)];
-    line.backgroundColor = rgba(255, 255, 255, 0.6);
-    [bottomV addSubview:line];
     [self addSubview:bottomV];
     
 }
@@ -130,7 +141,7 @@
     btn.layer.cornerRadius = 3.0;
     btn.frame = CGRectMake(main_width - 120, CGRectGetMinY(table.frame) + 10, 110, 30);
     [btn addTarget:self action:@selector(scrToCreate) forControlEvents:UIControlEventTouchUpInside];
-    btn.backgroundColor = [UIColor orangeColor];
+    btn.backgroundColor = [UIColor clearColor];
     [self addSubview:btn];
 }
 

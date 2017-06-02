@@ -11,21 +11,21 @@
 #import "CCPCalendarCellTableViewCell.h"
 #import "UIView+CCPView.h"
 
-@interface CCPCalendarTable ()
-@property (nonatomic, strong) NSMutableArray *cellHs;
-@end
 
 @implementation CCPCalendarTable
 
 - (instancetype)initWithFrame:(CGRect)frame manager:(CCPCalendarManager *)manager {
     if (self = [super initWithFrame:frame]) {
-        [self registerClass:[CCPCalendarCellTableViewCell class] forCellReuseIdentifier:@"cell"];
         self.showsVerticalScrollIndicator = NO;
         self.dataSource = self;
         self.delegate = self;
-        self.cellHs = [NSMutableArray array];
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.manager = manager;
+        _exitViews = [NSMutableArray array];
+        [self.dates enumerateObjectsUsingBlock:^(NSDate * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [_exitViews addObject:@""];
+        }];
+        [self registerClass:[CCPCalendarCellTableViewCell class] forCellReuseIdentifier:@"cell"];
         if (self.manager.isShowPast) {
             NSInteger a = self.dates.count / 2;
             __block CGFloat y = 0;
@@ -38,13 +38,10 @@
         }
         [self scrToCreate];
         self.bounces = NO;
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
-
-
-
-
 
 - (void)scrToCreate {
     typeof(self)ws = self;
@@ -97,12 +94,22 @@
     CCPCalendarCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     NSDate *date = self.dates[indexPath.row];
     if (!cell) {
-        cell = [[CCPCalendarCellTableViewCell alloc] init];
+        cell = [CCPCalendarCellTableViewCell new];
     }
-    cell.manager = self.manager;
-    cell.date = date;
-    [self.cellHs addObject:@([cell.contentView getSupH])];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    else {
+        cell.manager = self.manager;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.contentView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj removeFromSuperview];
+        }];
+        if ([self.exitViews[indexPath.row] isKindOfClass:[UIView class]]) {
+            [cell.contentView addSubview:self.exitViews[indexPath.row]];
+        }
+        else {
+            UIView *av = [cell createDateView:date];
+            [self.exitViews replaceObjectAtIndex:indexPath.row withObject:av];
+        }
+    }
     return cell;
 }
 

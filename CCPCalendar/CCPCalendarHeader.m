@@ -53,17 +53,18 @@
  */
 - (void)functionBtns {
     l_btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [l_btn setTitle:@"X" forState:UIControlStateNormal];
+    [l_btn setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
     l_btn.titleLabel.font = [UIFont systemFontOfSize:scale_w * 20];
-    l_btn.frame = CGRectMake(l_gap, t_gap, scale_w * 25, scale_w * 25);
+    l_btn.frame = CGRectMake(l_gap, t_gap + 5, scale_w * 50, scale_w * 25);
     [l_btn addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    [l_btn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 30)];
     [self addSubview:l_btn];
     r_btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [r_btn setTitle:@"clear" forState:UIControlStateNormal];
     r_btn.titleLabel.font = [UIFont systemFontOfSize:14.0 * scale_w];
     r_btn.titleLabel.textColor = [UIColor whiteColor];
     [r_btn addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
-    r_btn.frame = CGRectMake(main_width - r_gap - [self r_btn_w], t_gap, [self r_btn_w], scale_w * 25);
+    r_btn.frame = CGRectMake(main_width - r_gap - [self r_btn_w], t_gap + 5, [self r_btn_w], scale_w * 25);
     [self addSubview:r_btn];
 }
 

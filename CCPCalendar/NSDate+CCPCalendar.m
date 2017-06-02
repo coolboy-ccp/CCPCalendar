@@ -88,6 +88,8 @@ static const void *ccp_calendar = &ccp_calendar;
     NSCalendar *clendar = [self calendar];
     NSDateComponents *compts = [self compts:self];
     compts.month += month;
+    //必须 不然有bug
+    compts.day = 1;
     return [clendar dateFromComponents:compts];
 }
 

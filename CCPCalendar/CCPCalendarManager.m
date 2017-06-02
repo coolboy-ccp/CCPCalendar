@@ -11,26 +11,33 @@
 #import "AppDelegate.h"
 
 @interface CCPCalendarManager()
-{
-    CCPCalendarView *av;
-}
-
+@property (nonatomic, strong) CCPCalendarView *av;
 @end
 
 @implementation CCPCalendarManager
-
+@synthesize av;
 
 - (UIWindow *)appWindow {
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     return delegate.window;
 }
 
-- (void)av {
+- (void)calendar {
     if (!av) {
         av = [[CCPCalendarView alloc] init];
         av.frame = CGRectMake(0, main_height, main_width, main_height);
         av.manager = self;
+        av.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"overlay"]];
+        //av.layer.contents = (id)[UIImage imageNamed:@"overlay"];
         [av initSubviews];
+//        UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+//        effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+//        effectView.frame = CGRectMake(0, main_height, main_width, main_height);
+//        [[self appWindow] addSubview:effectView];
+//        effectView.alpha = 0.8;
+//        UIView *bgv = [[UIView alloc] initWithFrame:main_bounds];
+//        bgv.backgroundColor = rgba(35, 59, 97, 1.0);
+//        [effectView.contentView addSubview:bgv];
         [[self appWindow] addSubview:av];
     }
     [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
@@ -63,6 +70,13 @@
     return _selectArr;
 }
 
+- (NSMutableArray *)selectBtns {
+    if (!_selectBtns) {
+        _selectBtns = [NSMutableArray array];
+    }
+    return _selectBtns;
+}
+
 - (NSDate *)createDate {
     if (!_createDate) {
         _createDate = [NSDate date];
@@ -86,7 +100,7 @@
 
 - (UIColor *)selected_text_color {
     if (!_selected_text_color) {
-        _selected_text_color = rgba(1.0, 255.0, 1.0, 1.0);
+        _selected_text_color = rgba(35, 59, 97, 1.0);
     }
     return _selected_text_color;
 }
@@ -111,7 +125,7 @@
     CCPCalendarManager *manager = [CCPCalendarManager new];
     manager.isShowPast = YES;
     manager.complete = complete;
-    [manager av];
+    [manager calendar];
 }
 //多选有过去
 + (void)show_mutil_past:(completeBlock)complete {
@@ -119,14 +133,14 @@
     manager.isShowPast = YES;
     manager.selectType = select_type_multiple;
     manager.complete = complete;
-    [manager av];
+    [manager calendar];
 }
 //单选没有过去
 + (void)show_signal:(completeBlock)complete {
     CCPCalendarManager *manager = [CCPCalendarManager new];
     manager.isShowPast = NO;
     manager.complete = complete;
-    [manager av];
+    [manager calendar];
 }
 //多选没有过去
 + (void)show_mutil:(completeBlock)complete {
@@ -134,6 +148,36 @@
     manager.isShowPast = NO;
     manager.selectType = select_type_multiple;
     manager.complete = complete;
-    [manager av];
+    [manager calendar];
+}
+
+
+//单选有过去
+- (void)show_signal_past:(completeBlock)complete {
+    self.isShowPast = YES;
+    self.selectType = select_type_single;
+    self.complete = complete;
+    [self calendar];
+}
+//多选邮过去
+- (void)show_mutil_past:(completeBlock)complete {
+    self.isShowPast = YES;
+    self.selectType = select_type_multiple;
+    self.complete = complete;
+    [self calendar];
+}
+//单选没有过去
+- (void)show_signal:(completeBlock)complete {
+    self.isShowPast = NO;
+    self.selectType = select_type_single;
+    self.complete = complete;
+    [self calendar];
+}
+//多选没有过去
+- (void)show_mutil:(completeBlock)complete {
+    self.isShowPast = NO;
+    self.selectType = select_type_multiple;
+    self.complete = complete;
+    [self calendar];
 }
 @end

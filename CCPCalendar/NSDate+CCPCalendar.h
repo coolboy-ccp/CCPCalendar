@@ -39,6 +39,5 @@
 - (BOOL)laterThan:(NSDate *)date;
 //星期转文字
 - (NSString *)weekString;
-- (BOOL)isEarly:(NSDate *)date;
 
 @end
