@@ -36,6 +36,19 @@
             }];
             [self setContentOffset:CGPointMake(0, y)];
         }
+        if (self.manager.postionDate) {
+            NSInteger month = [self.manager.postionDate getMonth];
+            NSInteger year = [self.manager.postionDate getYear];
+            __block CGFloat y = 0;
+            [self.dates enumerateObjectsUsingBlock:^(NSDate * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                NSInteger obj_month = [obj getMonth];
+                NSInteger obj_year = [obj getYear];
+                if ((year - obj_year) >= 0 && (month - obj_month) > 0) {
+                    y += [self getHWithDate:obj];
+                }
+            }];
+            [self setContentOffset:CGPointMake(0, y)];
+        }
         [self scrToCreate];
         self.bounces = NO;
         self.backgroundColor = [UIColor clearColor];

@@ -43,18 +43,23 @@
     }
     [self addObserver:self forKeyPath:@"selected" options:NSKeyValueObservingOptionNew context:nil];
     [self addObserver:self forKeyPath:@"backgroundColor" options:NSKeyValueObservingOptionNew context:nil];
+    if ([self.manager.postionDate isSameTo:self.date]) {
+        self.selected = YES;
+        [self.manager.selectBtns addObject:self];
+        [self.manager.selectArr addObject:self.date];
+    }
 }
 
 - (void)ccpDispaly {
     if ([self.date isSameTo:self.manager.createDate]) {
-        [self setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        [self setTitleColor:rgba(255, 30, 30, 1.0) forState:UIControlStateNormal];
     }
     else {
         [self setTitleColor:self.manager.normal_text_color forState:UIControlStateNormal];
     }
     [self setTitleColor:self.manager.selected_text_color forState:UIControlStateSelected];
     [self setTitleColor:self.manager.disable_text_color forState:UIControlStateDisabled];
-    if ([self.date laterThan:self.manager.createDate]) {
+    if ([self.date earlyThan:self.manager.createDate]) {
         self.enabled = NO;
     }
     else {
@@ -63,16 +68,25 @@
     if (self.manager.isShowPast) {
         self.enabled = YES;
     }
-    
+    if (self.manager.dateEnableRange.count > 0) {
+        NSCAssert(self.manager.dateEnableRange.count == 2, @"dateEnableRange count must equal to 2");
+        if ([self.date earlyThan:self.manager.dateEnableRange.firstObject]) {
+            self.enabled = NO;
+        }
+        else if ([self.manager.dateEnableRange.lastObject earlyThan:self.date]) {
+            self.enabled = NO;
+        }
+    }
     [self cirPath];
     if (self.manager.createEndDate) {
-        if ([self.manager.createEndDate laterThan:self.date] || [self.manager.createEndDate isSameTo:self.date]) {
+        if ([self.manager.createEndDate earlyThan:self.date] || [self.manager.createEndDate isSameTo:self.date]) {
             self.enabled = YES;
         }
         else {
             self.enabled = NO;
         }
     }
+
 }
 
 - (void)action:(UIButton *)Bbtn event:(UIEvent *)event {
@@ -129,7 +143,7 @@
             [self setTitleColor:self.manager.selected_text_color forState:UIControlStateNormal];
         }
         else {if ([self.date isSameTo:self.manager.createDate]) {
-            [self setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [self setTitleColor:rgba(255, 30, 30, 1.0) forState:UIControlStateNormal];
         }
         else {
             [self setTitleColor:self.manager.normal_text_color forState:UIControlStateNormal];

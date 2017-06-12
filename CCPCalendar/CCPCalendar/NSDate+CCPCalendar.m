@@ -142,8 +142,8 @@ static const void *ccp_calendar = &ccp_calendar;
     return [[self calendar] dateFromComponents:copmts];
 }
 
-//是否晚于当前日期 精确到日
-- (BOOL)laterThan:(NSDate *)date {
+//是否早于当前日期 精确到日
+- (BOOL)earlyThan:(NSDate *)date {
     NSString *str1 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[self getYear],(long)[self getMonth],(long)[self getDay]];
     NSString *str2 = [NSString stringWithFormat:@"%ld%02ld%02ld",(long)[date getYear:date],(long)[date getMonth:date],(long)[date getDay:date]];
     if ([str1 compare:str2] == NSOrderedAscending) {
@@ -155,7 +155,7 @@ static const void *ccp_calendar = &ccp_calendar;
 
 - (NSString *)weekString {
     NSDateComponents *compts = [self compts:self];
-    NSArray *weeks = @[@"星期日",@"星期一",@"星期二",@"星期三",@"星期四",@"星期五",@"星期六"];
+    NSArray *weeks = @[@"SUN", @"Mon", @"TUE", @"WED", @"THU", @"FRI", @"SAT"];
     return weeks[compts.weekday - 1];
 }
 

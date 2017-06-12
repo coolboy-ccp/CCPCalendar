@@ -25,12 +25,17 @@
     CGFloat l_gap = 25 * scale_w;
     CGFloat label_h = 24 * scale_h;
     UILabel *bigLabel = [[UILabel alloc] init];
+    [bigLabel setFont:[UIFont boldSystemFontOfSize:bigLabel.font.pointSize]];
     NSString *label_text;
+    
+    NSString *month = [NSString stringWithFormat:@"%02ld",(long)[date getMonth]];
+    
     if ([date getYear]==[self.manager.createDate getYear]) {
-        label_text = [NSString stringWithFormat:@"%ld月",(long)[date getMonth]];
+        month = [NSString stringWithFormat:@"%@月",month];
+        label_text = month;
     }
     else {
-        label_text = [NSString stringWithFormat:@"%ld年%ld月",(long)[date getYear],(long)[date getMonth]];
+        label_text = [NSString stringWithFormat:@"%ld年%@",(long)[date getYear],month];
     }
     bigLabel.text = label_text;
     bigLabel.backgroundColor = [UIColor clearColor];
@@ -122,7 +127,7 @@
                 if (ccpBtn1 == ccpBtn2) {
                     return;
                 }
-                if (![ccpBtn1.date laterThan:ccpBtn2.date]) {
+                if (![ccpBtn1.date earlyThan:ccpBtn2.date]) {
                     ccpBtn1.selected = NO;
                     [ws.manager.selectBtns removeObject:ccpBtn1];
                 }

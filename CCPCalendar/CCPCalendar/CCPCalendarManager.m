@@ -27,17 +27,8 @@
         av = [[CCPCalendarView alloc] init];
         av.frame = CGRectMake(0, main_height, main_width, main_height);
         av.manager = self;
-        av.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"overlay"]];
-        //av.layer.contents = (id)[UIImage imageNamed:@"overlay"];
+        av.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background-date"]];
         [av initSubviews];
-//        UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-//        effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-//        effectView.frame = CGRectMake(0, main_height, main_width, main_height);
-//        [[self appWindow] addSubview:effectView];
-//        effectView.alpha = 0.8;
-//        UIView *bgv = [[UIView alloc] initWithFrame:main_bounds];
-//        bgv.backgroundColor = rgba(35, 59, 97, 1.0);
-//        [effectView.contentView addSubview:bgv];
         [[self appWindow] addSubview:av];
     }
     [UIView animateWithDuration:0.35 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
@@ -86,7 +77,7 @@
 
 - (UIColor *)disable_text_color {
     if (!_disable_text_color) {
-        _disable_text_color = rgba(255.0, 255.0, 255.0, 0.7);
+        _disable_text_color = rgba(255, 255, 2255, 0.3);
     }
     return _disable_text_color;
 }
@@ -107,14 +98,21 @@
 
 - (NSString *)startTitle {
     if (!_startTitle) {
-        _startTitle = @"开始\n日期";
+        _startTitle = [@"开始" stringByAppendingFormat:@"\n%@",@"日期"];
     }
     return _startTitle;
 }
 
+- (NSArray<NSDate *> *)dateEnableRange {
+    if (!_dateEnableRange) {
+        _dateEnableRange = [NSArray array];
+    }
+    return _dateEnableRange;
+}
+
 - (NSString *)endTitle {
     if (!_endTitle) {
-        _endTitle = @"结束\n日期";
+        _endTitle = [@"结束" stringByAppendingFormat:@"\n%@",@"日期"];
     }
     return _endTitle;
 }

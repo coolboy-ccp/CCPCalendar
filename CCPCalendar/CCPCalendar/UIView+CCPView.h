@@ -10,4 +10,6 @@
 
 @interface UIView (CCPView)
 - (CGFloat)getSupH;
+//alert 弹出动画
+- (void)show;
 @end

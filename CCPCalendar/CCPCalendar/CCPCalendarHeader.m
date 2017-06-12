@@ -33,6 +33,7 @@
         t_gap = scale_h * 15;
         self.backgroundColor = [UIColor clearColor];
         [self addObserver:self forKeyPath:@"manager.selectArr" options:NSKeyValueObservingOptionNew context:nil];
+        [self addObserver:self forKeyPath:@"manager.startTitle" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -44,7 +45,7 @@
     [self line];
     CGFloat h = [self getSupH];
     UIView *bLine = [[UIView alloc] initWithFrame:CGRectMake(0, h, main_width, 1)];
-    bLine.backgroundColor = rgba(255, 255, 255, 0.6);
+    bLine.backgroundColor = rgba(255, 255, 255, 0.2);
     [self addSubview:bLine];
 }
 
@@ -60,11 +61,12 @@
     [l_btn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 30)];
     [self addSubview:l_btn];
     r_btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [r_btn setTitle:@"clear" forState:UIControlStateNormal];
+    [r_btn setTitle:@"清除" forState:UIControlStateNormal];
     r_btn.titleLabel.font = [UIFont systemFontOfSize:14.0 * scale_w];
     r_btn.titleLabel.textColor = [UIColor whiteColor];
     [r_btn addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
     r_btn.frame = CGRectMake(main_width - r_gap - [self r_btn_w], t_gap + 5, [self r_btn_w], scale_w * 25);
+    r_btn.hidden = YES;
     [self addSubview:r_btn];
 }
 
@@ -76,23 +78,25 @@
     l_label.textAlignment = NSTextAlignmentLeft;
     l_label.numberOfLines = 2;
     [self addSubview:l_label];
-    r_label = [[UILabel alloc] init];
-    r_label.font = l_label.font;
-    r_label.textColor = [UIColor whiteColor];
-    r_label.textAlignment = NSTextAlignmentRight;
-    r_label.numberOfLines = 2;
-    [self addSubview:r_label];
+    if (self.manager.selectType == select_type_multiple) {
+        r_label = [[UILabel alloc] init];
+        r_label.font = l_label.font;
+        r_label.textColor = [UIColor whiteColor];
+        r_label.textAlignment = NSTextAlignmentRight;
+        r_label.numberOfLines = 2;
+        [self addSubview:r_label];
+    }
     [self displayLabel];
 }
 
 //星期
 - (void)weeks {
-    NSArray *arr = @[@"日",@"一",@"二",@"三",@"四",@"五",@"六"];
+    NSArray *arr = @[@"SUN", @"Mon", @"TUE", @"WED", @"THU", @"FRI", @"SAT"];
     CGFloat w = main_width / 7;
     CGFloat y;
-    for (NSString *week in arr) {
-        NSInteger idx = [arr indexOfObject:week];
-        UILabel *weekLabel = [[UILabel alloc] initWithFrame:CGRectMake(w * idx , CGRectGetMaxY(r_label.frame) + 15 * scale_h, w, 25 * scale_h)];
+    for (int idx = 0; idx < arr.count; idx ++) {
+        NSString *week = arr[idx];
+        UILabel *weekLabel = [[UILabel alloc] initWithFrame:CGRectMake(w * idx , CGRectGetMaxY(l_label.frame) + 15 * scale_h, w, 25 * scale_h)];
         y = CGRectGetMaxY(weekLabel.frame);
         weekLabel.textAlignment = NSTextAlignmentCenter;
         weekLabel.font = [UIFont systemFontOfSize:14 * scale_h];
@@ -104,17 +108,20 @@
 
 //中间斜线
 - (void)line {
-    CGFloat distance = 25 * scale_w;
-    CGFloat centerX = main_width / 2;
-    CGPoint startP = CGPointMake(centerX - distance, CGRectGetMaxY(l_label.frame) - 5);
-    CGPoint endP = CGPointMake(centerX + distance, CGRectGetMinY(r_label.frame) + 5);
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:startP];
-    [path addLineToPoint:endP];
-    CAShapeLayer *shapeL = [CAShapeLayer layer];
-    shapeL.path = path.CGPath;
-    shapeL.strokeColor = [UIColor whiteColor].CGColor;
-    [self.layer addSublayer:shapeL];
+    if (self.manager.selectType == select_type_multiple) {
+        CGFloat distance = 25 * scale_w;
+        CGFloat centerX = main_width / 2;
+        CGPoint startP = CGPointMake(centerX - distance, CGRectGetMaxY(l_label.frame) - 5);
+        CGPoint endP = CGPointMake(centerX + distance, CGRectGetMinY(r_label.frame) + 5);
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:startP];
+        [path addLineToPoint:endP];
+        CAShapeLayer *shapeL = [CAShapeLayer layer];
+        shapeL.path = path.CGPath;
+        shapeL.lineWidth = 0.5;
+        shapeL.strokeColor = [UIColor whiteColor].CGColor;
+        [self.layer addSublayer:shapeL];
+    }
 }
 
 - (CGFloat)r_btn_w {
@@ -161,6 +168,7 @@
             self.manager.endTitle = nil;
             NSDate *date = arr.firstObject;
             self.manager.startTitle = [NSString stringWithFormat:@"%ld月%02ld日\n%@",[date getMonth],[date getDay],[date weekString]];
+            
         }
         else if (arr.count == 2){
             NSDate *date1 = arr.firstObject;
@@ -169,6 +177,14 @@
             self.manager.endTitle = [NSString stringWithFormat:@"%ld月%02ld日\n%@",[date2 getMonth],[date2 getDay],[date2 weekString]];
         }
         [self displayLabel];
+    }
+    else if ([keyPath isEqualToString:@"manager.startTitle"]) {
+        if (![self.manager.startTitle isEqualToString:[@"开始" stringByAppendingFormat:@"\n%@",@"日期"]]) {
+            r_btn.hidden = NO;
+        }
+        else {
+            r_btn.hidden = YES;
+        }
     }
 }
 

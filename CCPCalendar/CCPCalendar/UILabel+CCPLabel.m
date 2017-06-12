@@ -13,7 +13,7 @@
 - (CGFloat)widthBy:(CGFloat)h {
     UIFont *font = self.font;
     NSDictionary *attri = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor whiteColor]};
-    CGRect rect = [self.text boundingRectWithSize:CGSizeMake(1000, h) options:NSStringDrawingUsesFontLeading attributes:attri context:nil];
+    CGRect rect = [self.text boundingRectWithSize:CGSizeMake(1000, h) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:attri context:nil];
     return rect.size.width;
 }
 

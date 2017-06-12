@@ -14,6 +14,7 @@
 #define main_height [UIScreen mainScreen].bounds.size.height
 #define main_bounds [UIScreen mainScreen].bounds
 #define rgba(r,g,b,a)[UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a/1.0]
+
 //相对iphone6布局
 #define scale_w main_width / 375.0
 #define scale_h main_height / 667.0
@@ -84,6 +85,15 @@ typedef void(^completeBlock)(NSArray <__kindof NSObject *> *stArr);
 @property (nonatomic, strong) NSMutableArray *selectArr;
 //
 @property (nonatomic, strong) NSMutableArray *selectBtns;
+/*
+ * 可用日期范围
+ * 第一个元素为开始 第二个元素为结束 默认为空
+ */
+@property (nonatomic, strong) NSArray<NSDate *> *dateEnableRange;
+/*
+ * 日历创建时停留的位置
+ */
+@property (nonatomic, strong) NSDate *postionDate;
 
 //单选有过去
 + (void)show_signal_past:(completeBlock)complete;

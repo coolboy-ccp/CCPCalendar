@@ -35,8 +35,8 @@
 - (BOOL)isSameTo:(NSDate *)date;
 //
 - (NSDate *)changToDay:(NSInteger)day;
-//是否晚于当前日期 精确到日
-- (BOOL)laterThan:(NSDate *)date;
+//是否早于当前日期 精确到日
+- (BOOL)earlyThan:(NSDate *)date;
 //星期转文字
 - (NSString *)weekString;
 

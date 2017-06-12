@@ -78,18 +78,10 @@
                     return;
                 }
             }
-            else if (self.manager.selectType == select_type_multiple) {
-                if (self.manager.selectArr.count < 2) {
-                    if (self.manager.close) {
-                        self.manager.close();
-                    }
-                    return;
-                }
-            }
         for (NSDate *date in self.manager.selectArr) {
-            NSString *year = [NSString stringWithFormat:@"%ld",[date getYear]];
-            NSString *month = [NSString stringWithFormat:@"%02ld",[date getMonth]];
-            NSString *day = [NSString stringWithFormat:@"%02ld",[date getDay]];
+            NSString *year = [NSString stringWithFormat:@"%ld",(long)[date getYear]];
+            NSString *month = [NSString stringWithFormat:@"%02ld",(long)[date getMonth]];
+            NSString *day = [NSString stringWithFormat:@"%02ld",(long)[date getDay]];
             NSString *weekString = [date weekString];
             NSInteger week = [date getWeek];
             NSString *ccpDate = [NSString stringWithFormat:@"%@-%@-%@",year,month,day];
@@ -116,11 +108,11 @@
     saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     saveBtn.backgroundColor = rgba(255, 255, 255, 0.2);
     saveBtn.frame = CGRectMake(0, t_gap, main_width, btnH);
-    [saveBtn setTitle:@"保存" forState:UIControlStateNormal];
-    [saveBtn setTitle:@"保存" forState:UIControlStateDisabled];
+    [saveBtn setTitle:@"OK"  forState:UIControlStateNormal];
+    [saveBtn setTitle:@"OK"  forState:UIControlStateDisabled];
     [saveBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveBtn setTitleColor:rgba(255, 255, 255, 0.7) forState:UIControlStateDisabled];
-    saveBtn.layer.cornerRadius = 5 * scale_w;
+//    saveBtn.layer.cornerRadius = 5 * scale_w;
     saveBtn.titleLabel.font = [UIFont systemFontOfSize:20 * scale_h];
     [saveBtn addTarget:self action:@selector(compelet) forControlEvents:UIControlEventTouchUpInside];
     [bottomV addSubview:saveBtn];
@@ -142,7 +134,7 @@
     btn.frame = CGRectMake(main_width - 120, CGRectGetMinY(table.frame) + 10, 110, 30);
     [btn addTarget:self action:@selector(scrToCreate) forControlEvents:UIControlEventTouchUpInside];
     btn.backgroundColor = [UIColor clearColor];
-    [self addSubview:btn];
+//    [self addSubview:btn];
 }
 
 - (void)scrToCreate {
