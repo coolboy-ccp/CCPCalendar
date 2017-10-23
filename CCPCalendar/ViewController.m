@@ -27,9 +27,14 @@
 //            NSLog(@"obj.week---%@",[obj valueForKey:@"week"]);
 //        }];
 //    }];
-    [CCPCalendarManager show_signal_past:^(NSArray *stArr) {
+    CCPCalendarManager *manager = [CCPCalendarManager new];
+    manager.selectDate = [NSDate date];
+    [manager show_signal:^(NSArray<__kindof NSObject *> *stArr) {
         
     }];
+//    [CCPCalendarManager show_signal_past:^(NSArray *stArr) {
+//        
+//    }];
 }
 
 - (void)didReceiveMemoryWarning {

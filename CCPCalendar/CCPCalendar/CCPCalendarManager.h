@@ -94,6 +94,10 @@ typedef void(^completeBlock)(NSArray <__kindof NSObject *> *stArr);
  * 日历创建时停留的位置
  */
 @property (nonatomic, strong) NSDate *postionDate;
+/*
+ * 日历默认选中
+ */
+@property (nonatomic, strong) NSDate *selectDate;
 
 //单选有过去
 + (void)show_signal_past:(completeBlock)complete;

@@ -86,20 +86,29 @@
             self.enabled = NO;
         }
     }
+    if ([self.date isSameTo:self.manager.selectDate]) {
+        self.selected = YES;
+        sl.fillColor = rgba(255, 255, 255, 1.0).CGColor;
+        if (self.manager.click) {
+            self.manager.click(self);
+        }
+    }
 
 }
 
 - (void)action:(UIButton *)Bbtn event:(UIEvent *)event {
-    UITouchPhase tp = event.allTouches.anyObject.phase;
-    if (tp == UITouchPhaseBegan) {
-        sl.fillColor = rgba(255, 255, 255, 0.5).CGColor;
-        sl.transform = CATransform3DMakeScale(1.2, 1.2, 1.0);
-    }
-    else if (tp == UITouchPhaseEnded) {
-        sl.transform = CATransform3DIdentity;
-        Bbtn.selected = YES;
-        if (self.manager.click) {
-            self.manager.click(self);
+    if (Bbtn.selected == NO) {
+        UITouchPhase tp = event.allTouches.anyObject.phase;
+        if (tp == UITouchPhaseBegan) {
+            sl.fillColor = rgba(255, 255, 255, 0.5).CGColor;
+            sl.transform = CATransform3DMakeScale(1.2, 1.2, 1.0);
+        }
+        else if (tp == UITouchPhaseEnded) {
+            sl.transform = CATransform3DIdentity;
+            Bbtn.selected = YES;
+            if (self.manager.click) {
+                self.manager.click(self);
+            }
         }
     }
 }
